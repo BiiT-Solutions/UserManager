@@ -152,7 +152,7 @@ public class RolePool<UserId, OrganizationId, RoleId> extends BasePool<RoleId, I
 						removeOrganizationRoles(nextOrganizationId);
 						nextOrganizationId = null;
 					} else {
-						if (organizationId == nextOrganizationId) {
+						if (organizationId.equals(nextOrganizationId)) {
 							return rolesByOrganization.get(nextOrganizationId);
 						}
 					}
@@ -175,7 +175,7 @@ public class RolePool<UserId, OrganizationId, RoleId> extends BasePool<RoleId, I
 						removeUserRoles(userId);
 						userId = null;
 					} else {
-						if (user.getId() == userId) {
+						if (user.getId().equals(userId)) {
 							return rolesByUser.get(userId);
 						}
 					}

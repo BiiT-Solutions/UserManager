@@ -41,12 +41,12 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 
 	public void addUserToGroup(IUser<UserId> user, IGroup<GroupId> group) {
 		if (user != null && group != null) {
-			userGroupsTime.put(user.getId(), System.currentTimeMillis());
 			Set<IGroup<GroupId>> groups = getGroups(user.getId());
 			if (groups == null) {
 				groups = new HashSet<IGroup<GroupId>>();
 			}
 			groups.add(group);
+			userGroupsTime.put(user.getId(), System.currentTimeMillis());
 			userGroups.put(user.getId(), groups);
 
 			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
@@ -69,11 +69,13 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 
 	private void addGroupUsers(GroupId groupId, Set<IUser<UserId>> users) {
 		if (groupId != null && users != null) {
-			groupUsersTime.put(groupId, System.currentTimeMillis());
-
 			Set<IUser<UserId>> usersOfGroup = getGroupUsers(groupId);
+			if (usersOfGroup == null) {
+				usersOfGroup = new HashSet<IUser<UserId>>();
+			}
 
 			usersOfGroup.addAll(users);
+			groupUsersTime.put(groupId, System.currentTimeMillis());
 			groupUsers.put(groupId, usersOfGroup);
 		}
 	}
@@ -102,7 +104,7 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 						removeUserGroups(nextUserId);
 						nextUserId = null;
 					} else {
-						if (userId == nextUserId) {
+						if (userId.equals(nextUserId)) {
 							return userGroups.get(userId);
 						}
 					}
@@ -125,7 +127,7 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 						removeGroupUsers(nextGroupId);
 						nextGroupId = null;
 					} else {
-						if (groupId == nextGroupId) {
+						if (groupId.equals(nextGroupId)) {
 							return groupUsers.get(nextGroupId);
 						}
 					}
@@ -171,10 +173,19 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 
 	public void removeUserFromGroups(UserId userId, GroupId groupId) {
 		if (userId != null && groupId != null) {
-			List<IUser<UserId>> tempUsers = new ArrayList<IUser<UserId>>(groupUsers.get(groupId));
-			for (IUser<UserId> user : tempUsers) {
-				if (user.getId() == userId) {
-					groupUsers.get(groupId).remove(user);
+			if (groupUsers.get(groupId) != null) {
+				List<IUser<UserId>> tempUsers = new ArrayList<IUser<UserId>>(groupUsers.get(groupId));
+				for (IUser<UserId> user : tempUsers) {
+					if (user.getId().equals(userId)) {
+						groupUsers.get(groupId).remove(user);
+					}
+				}
+			}
+			if (userGroups.get(userId) != null) {
+				for (IGroup<GroupId> group : new HashSet<IGroup<GroupId>>(userGroups.get(userId))) {
+					if (group.getId().equals(groupId)) {
+						userGroups.get(userId).remove(group);
+					}
 				}
 			}
 		}
