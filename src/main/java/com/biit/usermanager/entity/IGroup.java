@@ -1,7 +1,7 @@
 package com.biit.usermanager.entity;
 
-public interface IGroup<GroupId> {
+public interface IGroup<GroupId> extends IElement<GroupId> {
 
-	GroupId getGroupId();
+	String getUniqueName();
 
 }

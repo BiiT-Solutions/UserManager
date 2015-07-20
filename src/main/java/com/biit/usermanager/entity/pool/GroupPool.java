@@ -1,0 +1,199 @@
+package com.biit.usermanager.entity.pool;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.biit.usermanager.entity.IGroup;
+import com.biit.usermanager.entity.IUser;
+
+public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId>> {
+
+	private final static long EXPIRATION_TIME = 300000;// 5 minutes
+
+	// Group --> List<User>
+	private Map<GroupId, Long> groupUsersTime; // group id -> time.
+	private Map<GroupId, Set<IUser<UserId>>> groupUsers; // Users by group.
+
+	// User --> List<Group>
+	private Map<UserId, Long> userGroupsTime;
+	private Map<UserId, Set<IGroup<GroupId>>> userGroups;
+
+	public GroupPool() {
+		reset();
+	}
+
+	public void addGroup(IGroup<GroupId> group) {
+		addElement(group);
+	}
+
+	public void addUserToGroups(IUser<UserId> user, Set<IGroup<GroupId>> groups) {
+		if (user != null && groups != null) {
+			for (IGroup<GroupId> group : groups) {
+				addUserToGroup(user, group);
+			}
+		}
+	}
+
+	public void addUserToGroup(IUser<UserId> user, IGroup<GroupId> group) {
+		if (user != null && group != null) {
+			userGroupsTime.put(user.getId(), System.currentTimeMillis());
+			Set<IGroup<GroupId>> groups = getGroups(user.getId());
+			if (groups == null) {
+				groups = new HashSet<IGroup<GroupId>>();
+			}
+			groups.add(group);
+			userGroups.put(user.getId(), groups);
+
+			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
+			users.add(user);
+			addGroupUsers(group.getId(), users);
+		}
+	}
+
+	public void addGroupByTag(IGroup<GroupId> group, String tag) {
+		if (tag != null && group != null) {
+			super.addElementByTag(group, tag);
+		}
+	}
+
+	public void addGroupByTag(Set<IGroup<GroupId>> groups, String tag) {
+		if (tag != null && groups != null) {
+			super.addElementByTag(groups, tag);
+		}
+	}
+
+	private void addGroupUsers(GroupId groupId, Set<IUser<UserId>> users) {
+		if (groupId != null && users != null) {
+			groupUsersTime.put(groupId, System.currentTimeMillis());
+
+			Set<IUser<UserId>> usersOfGroup = getGroupUsers(groupId);
+
+			usersOfGroup.addAll(users);
+			groupUsers.put(groupId, usersOfGroup);
+		}
+	}
+
+	/**
+	 * Gets all previously stored groups of a user in a site.
+	 * 
+	 * @param siteId
+	 * @param userId
+	 * @return
+	 */
+	public IGroup<GroupId> getGroupById(GroupId groupId) {
+		return getElement(groupId);
+	}
+
+	public Set<IGroup<GroupId>> getGroups(UserId userId) {
+		if (userId != null) {
+			long now = System.currentTimeMillis();
+			UserId nextUserId = null;
+			if (userGroupsTime.size() > 0) {
+				Iterator<UserId> e = new HashMap<UserId, Long>(userGroupsTime).keySet().iterator();
+				while (e.hasNext()) {
+					nextUserId = e.next();
+					if ((now - userGroupsTime.get(nextUserId)) > EXPIRATION_TIME) {
+						// Object has expired.
+						removeUserGroups(nextUserId);
+						nextUserId = null;
+					} else {
+						if (userId == nextUserId) {
+							return userGroups.get(userId);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public Set<IUser<UserId>> getGroupUsers(GroupId groupId) {
+		if (groupId != null) {
+			long now = System.currentTimeMillis();
+			GroupId nextGroupId = null;
+			if (groupUsersTime.size() > 0) {
+				Iterator<GroupId> e = new HashMap<GroupId, Long>(groupUsersTime).keySet().iterator();
+				while (e.hasNext()) {
+					nextGroupId = e.next();
+					if ((now - groupUsersTime.get(nextGroupId)) > EXPIRATION_TIME) {
+						// Object has expired.
+						removeGroupUsers(nextGroupId);
+						nextGroupId = null;
+					} else {
+						if (groupId == nextGroupId) {
+							return groupUsers.get(nextGroupId);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public void removeGroupsByTag(String tag) {
+		super.removeElementsByTag(tag);
+	}
+
+	public void removeGroupByTag(String tag, IGroup<Long> group) {
+		super.removeElementsByTag(tag, group);
+	}
+
+	public void removeUser(IUser<UserId> user) {
+		if (user != null) {
+			removeUserGroups(user.getId());
+			for (GroupId groupId : groupUsers.keySet()) {
+				removeUserFromGroups(user.getId(), groupId);
+			}
+		}
+	}
+
+	public void removeGroupsById(GroupId groupId) {
+		removeElement(groupId);
+	}
+
+	public void removeGroupUsers(GroupId groupId) {
+		if (groupId != null) {
+			groupUsersTime.remove(groupId);
+			groupUsers.remove(groupId);
+		}
+	}
+
+	public void removeUserFromGroups(IUser<UserId> user, IGroup<GroupId> group) {
+		if (user != null && group != null) {
+			removeUserFromGroups(user.getId(), group.getId());
+		}
+	}
+
+	public void removeUserFromGroups(UserId userId, GroupId groupId) {
+		if (userId != null && groupId != null) {
+			List<IUser<UserId>> tempUsers = new ArrayList<IUser<UserId>>(groupUsers.get(groupId));
+			for (IUser<UserId> user : tempUsers) {
+				if (user.getId() == userId) {
+					groupUsers.get(groupId).remove(user);
+				}
+			}
+		}
+	}
+
+	public void removeUserGroups(UserId userId) {
+		if (userId != null) {
+			userGroupsTime.remove(userId);
+			userGroups.remove(userId);
+		}
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		groupUsersTime = new HashMap<GroupId, Long>();
+		groupUsers = new HashMap<GroupId, Set<IUser<UserId>>>();
+		userGroups = new HashMap<UserId, Set<IGroup<GroupId>>>();
+		userGroupsTime = new HashMap<UserId, Long>();
+	}
+
+}

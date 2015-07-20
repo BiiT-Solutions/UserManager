@@ -1,4 +1,4 @@
-package com.biit.usermanager.entity;
+package com.biit.usermanager.entity.pool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class RolePool<UserId, OrganizationId, RoleId> {
+import com.biit.usermanager.entity.IGroup;
+import com.biit.usermanager.entity.IRole;
+import com.biit.usermanager.entity.IUser;
+
+public class RolePool<UserId, OrganizationId, RoleId> extends BasePool<RoleId, IRole<RoleId>> {
 
 	private final static long EXPIRATION_TIME = 300000;// 5 minutes
 
@@ -23,25 +27,8 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		reset();
 	}
 
-	public void reset() {
-		userTime = new HashMap<UserId, Long>();
-		organizationTime = new HashMap<OrganizationId, Long>();
-		rolesByUser = new HashMap<UserId, List<IRole<RoleId>>>();
-		rolesByOrganization = new HashMap<OrganizationId, List<IRole<RoleId>>>();
-		userRoleOfGroupTime = new HashMap<UserId, Long>();
-		userRolesOfGroup = new HashMap<UserId, Map<OrganizationId, List<IRole<RoleId>>>>();
-	}
-
 	public void addOrganizationRoles(IGroup<OrganizationId> organization, List<IRole<RoleId>> roles) {
-		addOrganizationRoles(organization.getGroupId(), roles);
-	}
-
-	public void addUserGroupRole(IGroup<OrganizationId> group, IRole<RoleId> role) {
-		if (group != null && role != null) {
-			List<IRole<RoleId>> roles = new ArrayList<IRole<RoleId>>();
-			roles.add(role);
-			addOrganizationRoles(group, roles);
-		}
+		addOrganizationRoles(organization.getId(), roles);
 	}
 
 	private void addOrganizationRoles(OrganizationId organizationId, List<IRole<RoleId>> roles) {
@@ -61,6 +48,14 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		}
 	}
 
+	public void addUserGroupRole(IGroup<OrganizationId> group, IRole<RoleId> role) {
+		if (group != null && role != null) {
+			List<IRole<RoleId>> roles = new ArrayList<IRole<RoleId>>();
+			roles.add(role);
+			addOrganizationRoles(group, roles);
+		}
+	}
+
 	public void addUserRole(IUser<UserId> user, IRole<RoleId> role) {
 		if (user != null && role != null) {
 			List<IRole<RoleId>> roles = new ArrayList<IRole<RoleId>>();
@@ -71,8 +66,8 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 
 	public void addUserRoles(IUser<UserId> user, List<IRole<RoleId>> roles) {
 		if (user != null && roles != null && roles.size() > 0) {
-			userTime.put(user.getUserId(), System.currentTimeMillis());
-			List<IRole<RoleId>> userRoles = rolesByUser.get(user.getUserId());
+			userTime.put(user.getId(), System.currentTimeMillis());
+			List<IRole<RoleId>> userRoles = rolesByUser.get(user.getId());
 			if (userRoles == null) {
 				userRoles = new ArrayList<IRole<RoleId>>();
 			}
@@ -83,8 +78,59 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 				}
 			}
 
-			rolesByUser.put(user.getUserId(), userRoles);
+			rolesByUser.put(user.getId(), userRoles);
 		}
+	}
+
+	public void addUserRolesOfOrganization(IUser<UserId> user, IGroup<OrganizationId> organization,
+			List<IRole<RoleId>> roles) {
+		if (user != null && organization != null) {
+			addUserRolesOfOrganization(user.getId(), organization.getId(), roles);
+		}
+	}
+
+	public void addUserRolesOfOrganization(UserId userId, OrganizationId groupId, List<IRole<RoleId>> roles) {
+		if (userId != null && groupId != null && roles != null) {
+			userRoleOfGroupTime.put(userId, System.currentTimeMillis());
+
+			Map<OrganizationId, List<IRole<RoleId>>> userAndGroupRoles = userRolesOfGroup.get(userId);
+			if (userAndGroupRoles == null) {
+				userAndGroupRoles = new HashMap<OrganizationId, List<IRole<RoleId>>>();
+				userRolesOfGroup.put(userId, userAndGroupRoles);
+			}
+
+			List<IRole<RoleId>> groupRoles = userAndGroupRoles.get(groupId);
+			if (groupRoles == null) {
+				groupRoles = new ArrayList<IRole<RoleId>>();
+			}
+
+			for (IRole<RoleId> role : roles) {
+				if (!groupRoles.contains(role)) {
+					groupRoles.add(role);
+				}
+			}
+			userRolesOfGroup.get(userId).put(groupId, groupRoles);
+		}
+	}
+
+	/**
+	 * Get all roles of an organization.
+	 * 
+	 * @param group
+	 * @return
+	 */
+	public List<IRole<RoleId>> getGroupRoles(IGroup<OrganizationId> organization) {
+		return getOrganizationRoles(organization.getId());
+	}
+
+	/**
+	 * Get all roles of a organization.
+	 * 
+	 * @param organization
+	 * @return
+	 */
+	public List<IRole<RoleId>> getOrganizationRoles(IGroup<OrganizationId> organization) {
+		return getOrganizationRoles(organization.getId());
 	}
 
 	/**
@@ -116,26 +162,6 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		return null;
 	}
 
-	/**
-	 * Get all roles of an organization.
-	 * 
-	 * @param group
-	 * @return
-	 */
-	public List<IRole<RoleId>> getGroupRoles(IGroup<OrganizationId> organization) {
-		return getOrganizationRoles(organization.getGroupId());
-	}
-
-	/**
-	 * Get all roles of a organization.
-	 * 
-	 * @param organization
-	 * @return
-	 */
-	public List<IRole<RoleId>> getOrganizationRoles(IGroup<OrganizationId> organization) {
-		return getOrganizationRoles(organization.getGroupId());
-	}
-
 	public List<IRole<RoleId>> getUserRoles(IUser<UserId> user) {
 		if (user != null) {
 			long now = System.currentTimeMillis();
@@ -149,12 +175,19 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 						removeUserRoles(userId);
 						userId = null;
 					} else {
-						if (user.getUserId() == userId) {
+						if (user.getId() == userId) {
 							return rolesByUser.get(userId);
 						}
 					}
 				}
 			}
+		}
+		return null;
+	}
+
+	public List<IRole<RoleId>> getUserRolesOfGroup(IUser<UserId> user, IGroup<OrganizationId> organization) {
+		if (user != null && organization != null) {
+			return getUserRolesOfOrganization(user.getId(), organization.getId());
 		}
 		return null;
 	}
@@ -186,42 +219,14 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		return null;
 	}
 
-	public void addUserRolesOfOrganization(IUser<UserId> user, IGroup<OrganizationId> organization,
-			List<IRole<RoleId>> roles) {
-		if (user != null && organization != null) {
-			addUserRolesOfOrganization(user.getUserId(), organization.getGroupId(), roles);
-		}
+	public void removeOrganizationRole(IRole<RoleId> role, IGroup<OrganizationId> organization) {
+		removeOrganizationRole(role, organization.getId());
 	}
 
-	public void addUserRolesOfOrganization(UserId userId, OrganizationId groupId, List<IRole<RoleId>> roles) {
-		if (userId != null && groupId != null && roles != null) {
-			userRoleOfGroupTime.put(userId, System.currentTimeMillis());
-
-			Map<OrganizationId, List<IRole<RoleId>>> userAndGroupRoles = userRolesOfGroup.get(userId);
-			if (userAndGroupRoles == null) {
-				userAndGroupRoles = new HashMap<OrganizationId, List<IRole<RoleId>>>();
-				userRolesOfGroup.put(userId, userAndGroupRoles);
-			}
-
-			List<IRole<RoleId>> groupRoles = userAndGroupRoles.get(groupId);
-			if (groupRoles == null) {
-				groupRoles = new ArrayList<IRole<RoleId>>();
-			}
-
-			for (IRole<RoleId> role : roles) {
-				if (!groupRoles.contains(role)) {
-					groupRoles.add(role);
-				}
-			}
-			userRolesOfGroup.get(userId).put(groupId, groupRoles);
+	public void removeOrganizationRole(IRole<RoleId> role, OrganizationId organizationId) {
+		if (organizationId != null && rolesByOrganization.get(organizationId) != null) {
+			rolesByOrganization.get(organizationId).remove(role);
 		}
-	}
-
-	public List<IRole<RoleId>> getUserRolesOfGroup(IUser<UserId> user, IGroup<OrganizationId> organization) {
-		if (user != null && organization != null) {
-			return getUserRolesOfOrganization(user.getUserId(), organization.getGroupId());
-		}
-		return null;
 	}
 
 	public void removeOrganizationRole(OrganizationId organizationId) {
@@ -231,25 +236,15 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		}
 	}
 
-	public void removeOrganizationRole(IRole<RoleId> role, IGroup<OrganizationId> organization) {
-		removeOrganizationRole(role, organization.getGroupId());
-	}
-
-	public void removeOrganizationRole(IRole<RoleId> role, OrganizationId organizationId) {
-		if (organizationId != null && rolesByOrganization.get(organizationId) != null) {
-			rolesByOrganization.get(organizationId).remove(role);
+	public void removeOrganizationRoles(IGroup<OrganizationId> organization) {
+		if (organization != null) {
+			removeOrganizationRoles(organization.getId());
 		}
 	}
 
 	public void removeOrganizationRoles(OrganizationId organizationId) {
 		if (organizationId != null) {
 			removeOrganizationRoles(organizationId);
-		}
-	}
-
-	public void removeOrganizationRoles(IGroup<OrganizationId> organization) {
-		if (organization != null) {
-			removeOrganizationRoles(organization.getGroupId());
 		}
 	}
 
@@ -277,10 +272,16 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 
 	public void removeUserRole(IUser<UserId> user, IRole<RoleId> role) {
 		if (user != null && role != null) {
-			List<IRole<RoleId>> userRoles = rolesByUser.get(user.getUserId());
+			List<IRole<RoleId>> userRoles = rolesByUser.get(user.getId());
 			if (userRoles != null) {
 				userRoles.remove(role);
 			}
+		}
+	}
+
+	public void removeUserRoles(IUser<UserId> user) {
+		if (user != null) {
+			removeUserRoles(user.getId());
 		}
 	}
 
@@ -291,12 +292,6 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		}
 	}
 
-	public void removeUserRoles(IUser<UserId> user) {
-		if (user != null) {
-			removeUserRoles(user.getUserId());
-		}
-	}
-
 	public void removeUserRolesOfGroup(UserId userId) {
 		if (userId != null) {
 			userRoleOfGroupTime.remove(userId);
@@ -304,10 +299,21 @@ public class RolePool<UserId, OrganizationId, RoleId> {
 		}
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		userTime = new HashMap<UserId, Long>();
+		organizationTime = new HashMap<OrganizationId, Long>();
+		rolesByUser = new HashMap<UserId, List<IRole<RoleId>>>();
+		rolesByOrganization = new HashMap<OrganizationId, List<IRole<RoleId>>>();
+		userRoleOfGroupTime = new HashMap<UserId, Long>();
+		userRolesOfGroup = new HashMap<UserId, Map<OrganizationId, List<IRole<RoleId>>>>();
+	}
+
 	public void setUserRoles(IUser<UserId> user, List<IRole<RoleId>> roles) {
 		if (user != null && roles != null) {
-			userTime.put(user.getUserId(), System.currentTimeMillis());
-			rolesByUser.put(user.getUserId(), roles);
+			userTime.put(user.getId(), System.currentTimeMillis());
+			rolesByUser.put(user.getId(), roles);
 		}
 	}
 }

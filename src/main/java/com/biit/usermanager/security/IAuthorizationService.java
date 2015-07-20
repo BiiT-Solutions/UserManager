@@ -1,6 +1,5 @@
 package com.biit.usermanager.security;
 
-import java.util.List;
 import java.util.Set;
 
 import com.biit.usermanager.entity.IGroup;
@@ -10,7 +9,7 @@ import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
-	List<IUser<UserId>> getAllUsers();
+	Set<IUser<UserId>> getAllUsers();
 
 	IGroup<GroupId> getOrganization(long organizationId) throws UserManagementException;
 
@@ -35,6 +34,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	IRole<RoleId> getRole(long roleId) throws UserManagementException;
 
-	List<IUser<UserId>> getAllUsers(long organizationId);
+	Set<IUser<UserId>> getAllUsers(long organizationId);
 
 }
