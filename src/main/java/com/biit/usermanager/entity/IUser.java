@@ -1,5 +1,7 @@
 package com.biit.usermanager.entity;
 
+import java.util.Locale;
+
 public interface IUser<Id> extends IElement<Id> {
 
 	String getEmailAddress();
@@ -9,5 +11,9 @@ public interface IUser<Id> extends IElement<Id> {
 	String getUniqueName();
 
 	void setPassword(String password);
+
+	Locale getLocale();
+
+	String getLanguageId();
 
 }
