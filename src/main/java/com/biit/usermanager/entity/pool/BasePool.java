@@ -29,6 +29,31 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 		elementsById.put(element.getId(), element);
 	}
 
+	public void addElementByTag(Set<Type> elements, String tag) {
+		if (tag != null && elements != null) {
+			elementsTagTime.put(tag, System.currentTimeMillis());
+			Set<Type> existingGroups = elementsByTag.get(tag);
+			if (existingGroups == null) {
+				existingGroups = new HashSet<Type>();
+			}
+			existingGroups.addAll(elements);
+			elementsByTag.put(tag, existingGroups);
+		}
+	}
+
+	public void addElementByTag(Type element, String tag) {
+		if (tag != null && element != null) {
+			addElement(element);
+			elementsTagTime.put(tag, System.currentTimeMillis());
+			Set<Type> elements = elementsByTag.get(tag);
+			if (elements == null) {
+				elements = new HashSet<Type>();
+			}
+			elements.add(element);
+			elementsByTag.put(tag, elements);
+		}
+	}
+
 	/**
 	 * Gets all previously stored elements of a user in a site.
 	 * 
@@ -59,6 +84,10 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 		return null;
 	}
 
+	public Map<ElementId, Type> getElementsById() {
+		return elementsById;
+	}
+
 	public Set<Type> getElementsByTag(String tag) {
 		long now = System.currentTimeMillis();
 		String nextGroupTag = null;
@@ -80,29 +109,8 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 		return null;
 	}
 
-	public void addElementByTag(Type element, String tag) {
-		if (tag != null && element != null) {
-			addElement(element);
-			elementsTagTime.put(tag, System.currentTimeMillis());
-			Set<Type> elements = elementsByTag.get(tag);
-			if (elements == null) {
-				elements = new HashSet<Type>();
-			}
-			elements.add(element);
-			elementsByTag.put(tag, elements);
-		}
-	}
-
-	public void addElementByTag(Set<Type> elements, String tag) {
-		if (tag != null && elements != null) {
-			elementsTagTime.put(tag, System.currentTimeMillis());
-			Set<Type> existingGroups = elementsByTag.get(tag);
-			if (existingGroups == null) {
-				existingGroups = new HashSet<Type>();
-			}
-			existingGroups.addAll(elements);
-			elementsByTag.put(tag, existingGroups);
-		}
+	public Map<ElementId, Long> getElementsTime() {
+		return elementsTime;
 	}
 
 	public void removeElement(ElementId elementId) {
@@ -110,14 +118,6 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 			elementsTime.remove(elementId);
 			elementsById.remove(elementId);
 		}
-	}
-
-	public Map<ElementId, Long> getElementsTime() {
-		return elementsTime;
-	}
-
-	public Map<ElementId, Type> getElementsById() {
-		return elementsById;
 	}
 
 	public void removeElementsByTag(String tag) {

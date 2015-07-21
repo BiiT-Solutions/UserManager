@@ -27,8 +27,12 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		reset();
 	}
 
-	public void addGroupRoles(IGroup<GroupId> group, Set<IRole<RoleId>> roles) {
-		addGroupRoles(group.getId(), roles);
+	public void addGroupRole(IGroup<GroupId> group, IRole<RoleId> role) {
+		if (group != null && role != null) {
+			Set<IRole<RoleId>> roles = new HashSet<IRole<RoleId>>();
+			roles.add(role);
+			addGroupRoles(group, roles);
+		}
 	}
 
 	private void addGroupRoles(GroupId groupId, Set<IRole<RoleId>> roles) {
@@ -48,12 +52,8 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		}
 	}
 
-	public void addGroupRole(IGroup<GroupId> group, IRole<RoleId> role) {
-		if (group != null && role != null) {
-			Set<IRole<RoleId>> roles = new HashSet<IRole<RoleId>>();
-			roles.add(role);
-			addGroupRoles(group, roles);
-		}
+	public void addGroupRoles(IGroup<GroupId> group, Set<IRole<RoleId>> roles) {
+		addGroupRoles(group.getId(), roles);
 	}
 
 	public void addUserRole(IUser<UserId> user, IRole<RoleId> role) {
@@ -113,16 +113,6 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 	}
 
 	/**
-	 * Get all roles of an group.
-	 * 
-	 * @param group
-	 * @return
-	 */
-	public Set<IRole<RoleId>> getGroupRoles(IGroup<GroupId> group) {
-		return getGroupRoles(group.getId());
-	}
-
-	/**
 	 * Get all roles of a group.
 	 * 
 	 * @param groupId
@@ -149,6 +139,16 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get all roles of an group.
+	 * 
+	 * @param group
+	 * @return
+	 */
+	public Set<IRole<RoleId>> getGroupRoles(IGroup<GroupId> group) {
+		return getGroupRoles(group.getId());
 	}
 
 	public Set<IRole<RoleId>> getUserRoles(IUser<UserId> user) {
@@ -207,8 +207,11 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		return null;
 	}
 
-	public void removeGroupRole(IRole<RoleId> role, IGroup<GroupId> group) {
-		removeGroupRole(role, group.getId());
+	public void removeGroupRole(GroupId groupId) {
+		if (groupId != null) {
+			groupTime.remove(groupId);
+			rolesByGroup.remove(groupId);
+		}
 	}
 
 	public void removeGroupRole(IRole<RoleId> role, GroupId groupId) {
@@ -217,22 +220,19 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		}
 	}
 
-	public void removeGroupRole(GroupId groupId) {
+	public void removeGroupRole(IRole<RoleId> role, IGroup<GroupId> group) {
+		removeGroupRole(role, group.getId());
+	}
+
+	public void removeGroupRoles(GroupId groupId) {
 		if (groupId != null) {
-			groupTime.remove(groupId);
-			rolesByGroup.remove(groupId);
+			removeGroupRoles(groupId);
 		}
 	}
 
 	public void removeGroupRoles(IGroup<GroupId> group) {
 		if (group != null) {
 			removeGroupRoles(group.getId());
-		}
-	}
-
-	public void removeGroupRoles(GroupId groupId) {
-		if (groupId != null) {
-			removeGroupRoles(groupId);
 		}
 	}
 

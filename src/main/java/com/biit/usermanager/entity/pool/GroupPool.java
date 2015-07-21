@@ -31,30 +31,6 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 		addElement(group);
 	}
 
-	public void addUserToGroups(IUser<UserId> user, Set<IGroup<GroupId>> groups) {
-		if (user != null && groups != null) {
-			for (IGroup<GroupId> group : groups) {
-				addUserToGroup(user, group);
-			}
-		}
-	}
-
-	public void addUserToGroup(IUser<UserId> user, IGroup<GroupId> group) {
-		if (user != null && group != null) {
-			Set<IGroup<GroupId>> groups = getGroups(user.getId());
-			if (groups == null) {
-				groups = new HashSet<IGroup<GroupId>>();
-			}
-			groups.add(group);
-			userGroupsTime.put(user.getId(), System.currentTimeMillis());
-			userGroups.put(user.getId(), groups);
-
-			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
-			users.add(user);
-			addGroupUsers(group.getId(), users);
-		}
-	}
-
 	public void addGroupByTag(IGroup<GroupId> group, String tag) {
 		if (tag != null && group != null) {
 			super.addElementByTag(group, tag);
@@ -77,6 +53,30 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			usersOfGroup.addAll(users);
 			groupUsersTime.put(groupId, System.currentTimeMillis());
 			groupUsers.put(groupId, usersOfGroup);
+		}
+	}
+
+	public void addUserToGroup(IUser<UserId> user, IGroup<GroupId> group) {
+		if (user != null && group != null) {
+			Set<IGroup<GroupId>> groups = getGroups(user.getId());
+			if (groups == null) {
+				groups = new HashSet<IGroup<GroupId>>();
+			}
+			groups.add(group);
+			userGroupsTime.put(user.getId(), System.currentTimeMillis());
+			userGroups.put(user.getId(), groups);
+
+			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
+			users.add(user);
+			addGroupUsers(group.getId(), users);
+		}
+	}
+
+	public void addUserToGroups(IUser<UserId> user, Set<IGroup<GroupId>> groups) {
+		if (user != null && groups != null) {
+			for (IGroup<GroupId> group : groups) {
+				addUserToGroup(user, group);
+			}
 		}
 	}
 
@@ -137,12 +137,23 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 		return null;
 	}
 
+	public void removeGroupByTag(String tag, IGroup<Long> group) {
+		super.removeElementsByTag(tag, group);
+	}
+
+	public void removeGroupsById(GroupId groupId) {
+		removeElement(groupId);
+	}
+
 	public void removeGroupsByTag(String tag) {
 		super.removeElementsByTag(tag);
 	}
 
-	public void removeGroupByTag(String tag, IGroup<Long> group) {
-		super.removeElementsByTag(tag, group);
+	public void removeGroupUsers(GroupId groupId) {
+		if (groupId != null) {
+			groupUsersTime.remove(groupId);
+			groupUsers.remove(groupId);
+		}
 	}
 
 	public void removeUser(IUser<UserId> user) {
@@ -151,17 +162,6 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			for (GroupId groupId : groupUsers.keySet()) {
 				removeUserFromGroups(user.getId(), groupId);
 			}
-		}
-	}
-
-	public void removeGroupsById(GroupId groupId) {
-		removeElement(groupId);
-	}
-
-	public void removeGroupUsers(GroupId groupId) {
-		if (groupId != null) {
-			groupUsersTime.remove(groupId);
-			groupUsers.remove(groupId);
 		}
 	}
 

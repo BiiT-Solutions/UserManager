@@ -4,9 +4,9 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getEmailAddress();
 
-	String getUniqueName();
-
 	String getPassword();
+
+	String getUniqueName();
 
 	void setPassword(String password);
 

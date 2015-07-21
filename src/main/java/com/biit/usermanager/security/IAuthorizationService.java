@@ -11,7 +11,13 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	Set<IUser<UserId>> getAllUsers() throws UserManagementException;
 
+	Set<IUser<UserId>> getAllUsers(IGroup<GroupId> group) throws UserManagementException;
+
 	IGroup<GroupId> getOrganization(long organizationId) throws UserManagementException;
+
+	IRole<RoleId> getRole(Long roleId) throws UserManagementException;
+
+	IRole<RoleId> getRole(String roleName) throws UserManagementException;
 
 	Set<IActivity> getRoleActivities(IRole<RoleId> role);
 
@@ -21,6 +27,8 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	Set<IGroup<GroupId>> getUserOrganizations(IUser<UserId> user) throws UserManagementException;
 
+	Set<IGroup<GroupId>> getUserOrganizations(IUser<UserId> user, IGroup<GroupId> site) throws UserManagementException;
+
 	Set<IRole<RoleId>> getUserRoles(IUser<UserId> user) throws UserManagementException;
 
 	Set<IRole<RoleId>> getUserRoles(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
@@ -29,13 +37,5 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity)
 			throws UserManagementException;
-
-	IRole<RoleId> getRole(String roleName) throws UserManagementException;
-
-	IRole<RoleId> getRole(Long roleId) throws UserManagementException;
-
-	Set<IUser<UserId>> getAllUsers(IGroup<GroupId> group) throws UserManagementException;
-
-	Set<IGroup<GroupId>> getUserOrganizations(IUser<UserId> user, IGroup<GroupId> site) throws UserManagementException;
 
 }

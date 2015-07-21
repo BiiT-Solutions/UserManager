@@ -25,10 +25,31 @@ public class AuthorizationPool<UserId, OrganizationId> {
 		reset();
 	}
 
-	public void reset() {
-		time = new HashMap<IUser<UserId>, Long>();
-		activitiesByUser = new HashMap<IUser<UserId>, Map<IActivity, Boolean>>();
-		activitiesByOrganization = new HashMap<IUser<UserId>, Map<IGroup<OrganizationId>, Map<IActivity, Boolean>>>();
+	public void addUser(IUser<UserId> user, IActivity activity, Boolean authorized) {
+		if (user != null && activity != null && authorized != null) {
+			if (activitiesByUser.get(user) == null) {
+				activitiesByUser.put(user, new Hashtable<IActivity, Boolean>());
+			}
+
+			time.put(user, System.currentTimeMillis());
+			activitiesByUser.get(user).put(activity, authorized);
+		}
+	}
+
+	public void addUser(IUser<UserId> user, IGroup<OrganizationId> organization, IActivity activity,
+			Boolean authorized) {
+		if (user != null && organization != null && activity != null && authorized != null) {
+			if (activitiesByOrganization.get(user) == null) {
+				activitiesByOrganization.put(user, new HashMap<IGroup<OrganizationId>, Map<IActivity, Boolean>>());
+			}
+
+			if (activitiesByOrganization.get(user).get(organization) == null) {
+				activitiesByOrganization.get(user).put(organization, new HashMap<IActivity, Boolean>());
+			}
+
+			activitiesByOrganization.get(user).get(organization).put(activity, authorized);
+			time.put(user, System.currentTimeMillis());
+		}
 	}
 
 	/**
@@ -93,38 +114,17 @@ public class AuthorizationPool<UserId, OrganizationId> {
 		return null;
 	}
 
-	public void addUser(IUser<UserId> user, IActivity activity, Boolean authorized) {
-		if (user != null && activity != null && authorized != null) {
-			if (activitiesByUser.get(user) == null) {
-				activitiesByUser.put(user, new Hashtable<IActivity, Boolean>());
-			}
-
-			time.put(user, System.currentTimeMillis());
-			activitiesByUser.get(user).put(activity, authorized);
-		}
-	}
-
-	public void addUser(IUser<UserId> user, IGroup<OrganizationId> organization, IActivity activity,
-			Boolean authorized) {
-		if (user != null && organization != null && activity != null && authorized != null) {
-			if (activitiesByOrganization.get(user) == null) {
-				activitiesByOrganization.put(user, new HashMap<IGroup<OrganizationId>, Map<IActivity, Boolean>>());
-			}
-
-			if (activitiesByOrganization.get(user).get(organization) == null) {
-				activitiesByOrganization.get(user).put(organization, new HashMap<IActivity, Boolean>());
-			}
-
-			activitiesByOrganization.get(user).get(organization).put(activity, authorized);
-			time.put(user, System.currentTimeMillis());
-		}
-	}
-
 	public void removeUser(IUser<UserId> user) {
 		if (user != null) {
 			time.remove(user);
 			activitiesByUser.remove(user);
 			activitiesByOrganization.remove(user);
 		}
+	}
+
+	public void reset() {
+		time = new HashMap<IUser<UserId>, Long>();
+		activitiesByUser = new HashMap<IUser<UserId>, Map<IActivity, Boolean>>();
+		activitiesByOrganization = new HashMap<IUser<UserId>, Map<IGroup<OrganizationId>, Map<IActivity, Boolean>>>();
 	}
 }
