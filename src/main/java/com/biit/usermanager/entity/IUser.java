@@ -6,4 +6,8 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getUniqueName();
 
+	String getPassword();
+
+	void setPassword(String password);
+
 }

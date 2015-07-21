@@ -9,7 +9,7 @@ import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
-	Set<IUser<UserId>> getAllUsers();
+	Set<IUser<UserId>> getAllUsers() throws UserManagementException;
 
 	IGroup<GroupId> getOrganization(long organizationId) throws UserManagementException;
 
@@ -32,8 +32,8 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	IRole<RoleId> getRole(String roleName) throws UserManagementException;
 
-	IRole<RoleId> getRole(long roleId) throws UserManagementException;
+	IRole<RoleId> getRole(Long roleId) throws UserManagementException;
 
-	Set<IUser<UserId>> getAllUsers(long organizationId);
+	Set<IUser<UserId>> getAllUsers(IGroup<GroupId> group) throws UserManagementException;
 
 }
