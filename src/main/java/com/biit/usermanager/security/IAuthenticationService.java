@@ -2,11 +2,14 @@ package com.biit.usermanager.security;
 
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.security.exceptions.AuthenticationRequired;
+import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
 import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthenticationService<UserId, GroupId> {
 
-	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException;
+	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException,
+			AuthenticationRequired, InvalidCredentialsException;
 
 	IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
 
