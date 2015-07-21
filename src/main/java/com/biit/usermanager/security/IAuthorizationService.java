@@ -36,4 +36,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	Set<IUser<UserId>> getAllUsers(IGroup<GroupId> group) throws UserManagementException;
 
+	Set<IGroup<GroupId>> getUserOrganizations(IUser<UserId> user, IGroup<GroupId> site) throws UserManagementException;
+
 }
