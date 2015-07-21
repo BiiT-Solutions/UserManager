@@ -38,4 +38,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity)
 			throws UserManagementException;
 
+	void reset();
+
 }
