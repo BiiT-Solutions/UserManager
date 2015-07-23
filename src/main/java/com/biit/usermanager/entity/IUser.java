@@ -16,4 +16,8 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getLanguageId();
 
+	String getFirstName();
+
+	String getLastName();
+
 }
