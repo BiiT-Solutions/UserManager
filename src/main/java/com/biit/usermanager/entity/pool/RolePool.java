@@ -126,7 +126,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 				Iterator<GroupId> e = new HashMap<GroupId, Long>(groupTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if ((now - groupTime.get(nextGroupId)) > EXPIRATION_TIME) {
+					if (groupTime.get(nextGroupId) != null && (now - groupTime.get(nextGroupId)) > EXPIRATION_TIME) {
 						// object has expired
 						removeGroupRoles(nextGroupId);
 						nextGroupId = null;
@@ -159,7 +159,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 				Iterator<UserId> e = new HashMap<UserId, Long>(userTime).keySet().iterator();
 				while (e.hasNext()) {
 					userId = e.next();
-					if ((now - userTime.get(userId)) > EXPIRATION_TIME) {
+					if (userTime.get(userId) != null && (now - userTime.get(userId)) > EXPIRATION_TIME) {
 						// object has expired
 						removeUserRoles(userId);
 						userId = null;
@@ -184,18 +184,19 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 	public Set<IRole<RoleId>> getUserRolesOfGroup(UserId userId, GroupId groupId) {
 		if (userId != null && groupId != null) {
 			long now = System.currentTimeMillis();
-			UserId nextUserId = null;
+			UserId nextId = null;
 			if (userRoleOfGroupTime.size() > 0) {
 				Iterator<UserId> e = new HashMap<UserId, Long>(userRoleOfGroupTime).keySet().iterator();
 				while (e.hasNext()) {
-					nextUserId = e.next();
-					if ((now - userRoleOfGroupTime.get(nextUserId)) > EXPIRATION_TIME) {
+					nextId = e.next();
+					if (userRoleOfGroupTime.get(nextId) != null
+							&& (now - userRoleOfGroupTime.get(nextId)) > EXPIRATION_TIME) {
 						// object has expired
-						removeUserRolesOfGroup(nextUserId);
-						nextUserId = null;
+						removeUserRolesOfGroup(nextId);
+						nextId = null;
 					} else {
-						if (userId.equals(nextUserId)) {
-							Map<GroupId, Set<IRole<RoleId>>> userAndGroupRoles = userRolesOfGroup.get(nextUserId);
+						if (userId.equals(nextId)) {
+							Map<GroupId, Set<IRole<RoleId>>> userAndGroupRoles = userRolesOfGroup.get(nextId);
 							if (userAndGroupRoles != null) {
 								return userAndGroupRoles.get(groupId);
 							}

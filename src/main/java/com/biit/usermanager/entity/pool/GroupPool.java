@@ -91,21 +91,22 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 		return getElement(groupId);
 	}
 
-	public Set<IGroup<GroupId>> getGroups(UserId userId) {
-		if (userId != null) {
+	public Set<IGroup<GroupId>> getGroups(UserId groupId) {
+		if (groupId != null) {
 			long now = System.currentTimeMillis();
-			UserId nextUserId = null;
+			UserId nextGroupId = null;
 			if (userGroupsTime.size() > 0) {
 				Iterator<UserId> e = new HashMap<UserId, Long>(userGroupsTime).keySet().iterator();
 				while (e.hasNext()) {
-					nextUserId = e.next();
-					if ((now - userGroupsTime.get(nextUserId)) > EXPIRATION_TIME) {
+					nextGroupId = e.next();
+					if (userGroupsTime.get(nextGroupId) != null
+							&& (now - userGroupsTime.get(nextGroupId)) > EXPIRATION_TIME) {
 						// Object has expired.
-						removeUserGroups(nextUserId);
-						nextUserId = null;
+						removeUserGroups(nextGroupId);
+						nextGroupId = null;
 					} else {
-						if (userId.equals(nextUserId)) {
-							return userGroups.get(userId);
+						if (groupId.equals(nextGroupId)) {
+							return userGroups.get(groupId);
 						}
 					}
 				}
@@ -122,7 +123,8 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 				Iterator<GroupId> e = new HashMap<GroupId, Long>(groupUsersTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if ((now - groupUsersTime.get(nextGroupId)) > EXPIRATION_TIME) {
+					if (groupUsersTime.get(nextGroupId) != null
+							&& (now - groupUsersTime.get(nextGroupId)) > EXPIRATION_TIME) {
 						// Object has expired.
 						removeGroupUsers(nextGroupId);
 						nextGroupId = null;

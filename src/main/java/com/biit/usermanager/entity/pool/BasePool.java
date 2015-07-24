@@ -69,7 +69,8 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 				Iterator<ElementId> groupsIds = new HashMap<ElementId, Long>(elementsTime).keySet().iterator();
 				while (groupsIds.hasNext()) {
 					storedObjectId = groupsIds.next();
-					if ((now - elementsTime.get(storedObjectId)) > EXPIRATION_TIME) {
+					if (elementsTime.get(storedObjectId) != null
+							&& (now - elementsTime.get(storedObjectId)) > EXPIRATION_TIME) {
 						// object has expired
 						removeElement(elementId);
 						storedObjectId = null;
@@ -95,7 +96,8 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> {
 			Iterator<String> e = new HashMap<String, Set<Type>>(elementsByTag).keySet().iterator();
 			while (e.hasNext()) {
 				nextGroupTag = e.next();
-				if ((now - elementsTagTime.get(nextGroupTag)) > EXPIRATION_TIME) {
+				if (elementsTagTime.get(nextGroupTag) != null
+						&& (now - elementsTagTime.get(nextGroupTag)) > EXPIRATION_TIME) {
 					// object has expired
 					removeElementsByTag(nextGroupTag);
 					nextGroupTag = null;
