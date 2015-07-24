@@ -40,4 +40,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	void reset();
 
+	Set<IUser<Long>> getUsers(IRole<Long> role, IGroup<Long> organization) throws UserManagementException;
+
 }
