@@ -32,6 +32,15 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	IGroup<GroupId> getOrganization(GroupId organizationId) throws UserManagementException;
 
 	/**
+	 * Gets the organization from its name.
+	 * 
+	 * @param organizationId
+	 * @return
+	 * @throws UserManagementException
+	 */
+	IGroup<GroupId> getOrganization(String organizationName) throws UserManagementException;
+
+	/**
 	 * Gets a role from this id
 	 * 
 	 * @param roleId
