@@ -43,7 +43,7 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 		}
 	}
 
-	private void addGroupUsers(GroupId groupId, Set<IUser<UserId>> users) {
+	public void addGroupUsers(GroupId groupId, Set<IUser<UserId>> users) {
 		if (groupId != null && users != null) {
 			Set<IUser<UserId>> usersOfGroup = getGroupUsers(groupId);
 			if (usersOfGroup == null) {
@@ -66,9 +66,9 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			userGroupsTime.put(user.getId(), System.currentTimeMillis());
 			userGroups.put(user.getId(), groups);
 
-			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
-			users.add(user);
-			addGroupUsers(group.getId(), users);
+//			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
+//			users.add(user);
+//			addGroupUsers(group.getId(), users);
 		}
 	}
 
