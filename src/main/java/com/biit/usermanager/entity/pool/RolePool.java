@@ -35,7 +35,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		}
 	}
 
-	private void addGroupRoles(GroupId groupId, Set<IRole<RoleId>> roles) {
+	public void addGroupRoles(GroupId groupId, Set<IRole<RoleId>> roles) {
 		if (groupId != null && roles != null) {
 			groupTime.put(groupId, System.currentTimeMillis());
 			Set<IRole<RoleId>> groupRoles = rolesByGroup.get(groupId);
