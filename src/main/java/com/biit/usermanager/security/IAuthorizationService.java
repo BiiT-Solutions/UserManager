@@ -94,7 +94,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	Set<IGroup<GroupId>> getUserOrganizations(IUser<UserId> user) throws UserManagementException;
 
 	/**
-	 * Get all user organizations for this site.S
+	 * Get all user organizations for this site.
 	 * 
 	 * @param user
 	 * @param site
@@ -121,6 +121,13 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @throws UserManagementException
 	 */
 	Set<IRole<RoleId>> getUserRoles(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
+	
+	/**
+	 * Gets all available roles.
+	 * @return
+	 * @throws UserManagementException
+	 */
+	Set<IRole<RoleId>> getAllRoles() throws UserManagementException;
 
 	/**
 	 * A user is authorized to perform this activity in the application.
