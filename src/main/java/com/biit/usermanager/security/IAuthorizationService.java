@@ -127,7 +127,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return
 	 * @throws UserManagementException
 	 */
-	Set<IRole<RoleId>> getAllRoles() throws UserManagementException;
+	Set<IRole<RoleId>> getAllRoles(IGroup<Long> organization) throws UserManagementException;
 
 	/**
 	 * A user is authorized to perform this activity in the application.
