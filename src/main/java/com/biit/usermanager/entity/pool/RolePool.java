@@ -208,7 +208,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 		return null;
 	}
 
-	public void removeGroupRole(GroupId groupId) {
+	public void removeGroupRoles(GroupId groupId) {
 		if (groupId != null) {
 			groupTime.remove(groupId);
 			rolesByGroup.remove(groupId);
@@ -223,12 +223,6 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public void removeGroupRole(IRole<RoleId> role, IGroup<GroupId> group) {
 		removeGroupRole(role, group.getId());
-	}
-
-	public void removeGroupRoles(GroupId groupId) {
-		if (groupId != null) {
-			removeGroupRoles(groupId);
-		}
 	}
 
 	public void removeGroupRoles(IGroup<GroupId> group) {
