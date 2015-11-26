@@ -89,6 +89,17 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> exte
 		elementsByTag = new HashMap<String, Set<Type>>();
 	}
 
+	/**
+	 * Never expires elements here.
+	 * 
+	 * @param elementId
+	 * @return
+	 */
+	@Override
+	public boolean isDirty(Type element) {
+		return false;
+	}
+
 	@Override
 	public long getExpirationTime() {
 		return EXPIRATION_TIME;
