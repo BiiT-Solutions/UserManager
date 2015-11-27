@@ -1,6 +1,7 @@
 package com.biit.usermanager.entity;
 
-public interface IElement<Id> {
+import com.biit.utils.pool.PoolElement;
 
-	Id getId();
+public interface IElement<Id> extends PoolElement<Id> {
+
 }
