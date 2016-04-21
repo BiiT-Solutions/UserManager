@@ -41,6 +41,15 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	IGroup<GroupId> getOrganization(String organizationName) throws UserManagementException;
 
 	/**
+	 * Gets all the organizations of a company
+	 * 
+	 * @param organizationId
+	 * @return
+	 * @throws UserManagementException
+	 */
+	Set<IGroup<GroupId>> getAllAvailableOrganizations() throws UserManagementException;
+
+	/**
 	 * Gets a role from this id
 	 * 
 	 * @param roleId
@@ -121,9 +130,10 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @throws UserManagementException
 	 */
 	Set<IRole<RoleId>> getUserRoles(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
-	
+
 	/**
 	 * Gets all available roles.
+	 * 
 	 * @return
 	 * @throws UserManagementException
 	 */
