@@ -7,14 +7,13 @@ import java.util.Map;
 
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 import com.biit.usermanager.security.IActivity;
 
 /**
  * Defines if an activity is authorized by an user or not.
  */
 public class AuthorizationPool {
-
-	private final static long EXPIRATION_TIME = 300000;// 300 seconds
 
 	// user id -> time.
 	private Map<IUser<Long>, Long> time;
@@ -53,7 +52,8 @@ public class AuthorizationPool {
 	}
 
 	/**
-	 * Returns true or false if the activity is authorized and null if is not catched.
+	 * Returns true or false if the activity is authorized and null if is not
+	 * catched.
 	 * 
 	 * @param form
 	 * @param user
@@ -69,7 +69,7 @@ public class AuthorizationPool {
 			while (userEnum.hasNext()) {
 				userForm = userEnum.next();
 				try {
-					if (time.get(userForm) != null && (now - time.get(userForm)) > EXPIRATION_TIME) {
+					if (time.get(userForm) != null && (now - time.get(userForm)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userForm);
 						userForm = null;
@@ -95,13 +95,12 @@ public class AuthorizationPool {
 			while (userEnum.hasNext()) {
 				authorizedUser = userEnum.next();
 				try {
-					if (time.get(authorizedUser) != null && (now - time.get(authorizedUser)) > EXPIRATION_TIME) {
+					if (time.get(authorizedUser) != null && (now - time.get(authorizedUser)) > getExpirationTime()) {
 						// object has expired
 						removeUser(authorizedUser);
 						authorizedUser = null;
 					} else if (user != null && user.equals(authorizedUser)) {
-						if (groups.get(user) != null && groups.get(user).get(organization) != null
-								&& activity != null) {
+						if (groups.get(user) != null && groups.get(user).get(organization) != null && activity != null) {
 							return groups.get(user).get(organization).get(activity);
 						}
 					}
@@ -125,5 +124,9 @@ public class AuthorizationPool {
 		time = new HashMap<IUser<Long>, Long>();
 		users = new HashMap<IUser<Long>, Map<IActivity, Boolean>>();
 		groups = new HashMap<IUser<Long>, Map<IGroup<Long>, Map<IActivity, Boolean>>>();
+	}
+
+	public long getExpirationTime() {
+		return PoolConfigurationReader.getInstance().getStandardExpirationTime();
 	}
 }

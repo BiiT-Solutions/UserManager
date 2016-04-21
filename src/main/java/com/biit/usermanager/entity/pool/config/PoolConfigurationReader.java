@@ -48,7 +48,7 @@ public class PoolConfigurationReader extends ConfigurationReader {
 		}
 	}
 
-	public Long getExpirationTime() {
+	public Long getStandardExpirationTime() {
 		try {
 			return Long.parseLong(getPropertyLogException(EXPIRATION_TIME));
 		} catch (Exception e) {

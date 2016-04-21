@@ -9,8 +9,6 @@ import com.biit.usermanager.entity.IUser;
 
 public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 
-	private final static long EXPIRATION_TIME = 300000;// 5 minutes
-
 	private Map<RoleId, List<IUser<UserId>>> usersOfRole;
 	private Map<RoleId, Long> usersOfRoleTime; // User id -> getElementsTime().
 
@@ -37,14 +35,12 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<UserId> e = new HashMap<UserId, Long>(getElementsTime()).keySet().iterator();
 				while (e.hasNext()) {
 					userId = e.next();
-					if (getElementsTime().get(userId) != null
-							&& (now - getElementsTime().get(userId)) > EXPIRATION_TIME) {
+					if (getElementsTime().get(userId) != null && (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userId);
 						userId = null;
 					} else {
-						if (getElementsById().get(userId) != null
-								&& getElementsById().get(userId).getEmailAddress().equals(emailAddress)) {
+						if (getElementsById().get(userId) != null && getElementsById().get(userId).getEmailAddress().equals(emailAddress)) {
 							return getElementsById().get(userId);
 						}
 					}
@@ -66,14 +62,12 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<UserId> e = new HashMap<UserId, Long>(getElementsTime()).keySet().iterator();
 				while (e.hasNext()) {
 					userId = e.next();
-					if (getElementsTime().get(userId) != null
-							&& (now - getElementsTime().get(userId)) > EXPIRATION_TIME) {
+					if (getElementsTime().get(userId) != null && (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userId);
 						userId = null;
 					} else {
-						if (getElementsById().get(userId) != null
-								&& getElementsById().get(userId).getUniqueName().equals(screenName)) {
+						if (getElementsById().get(userId) != null && getElementsById().get(userId).getUniqueName().equals(screenName)) {
 							return getElementsById().get(userId);
 						}
 					}
@@ -91,8 +85,7 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<RoleId> e = new HashMap<RoleId, Long>(usersOfRoleTime).keySet().iterator();
 				while (e.hasNext()) {
 					storedObject = e.next();
-					if (usersOfRoleTime.get(storedObject) != null
-							&& (now - usersOfRoleTime.get(storedObject)) > EXPIRATION_TIME) {
+					if (usersOfRoleTime.get(storedObject) != null && (now - usersOfRoleTime.get(storedObject)) > getExpirationTime()) {
 						// object has expired
 						removeUsersOfRole(storedObject);
 						storedObject = null;

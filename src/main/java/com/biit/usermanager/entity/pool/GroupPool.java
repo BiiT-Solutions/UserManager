@@ -12,9 +12,6 @@ import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
 
 public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId>> {
-
-	private final static long EXPIRATION_TIME = 300000;// 5 minutes
-
 	// Group --> List<User>
 	private Map<GroupId, Long> groupUsersTime; // group id -> time.
 	private Map<GroupId, Set<IUser<UserId>>> groupUsers; // Users by group.
@@ -66,9 +63,9 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			userGroupsTime.put(user.getId(), System.currentTimeMillis());
 			userGroups.put(user.getId(), groups);
 
-//			Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
-//			users.add(user);
-//			addGroupUsers(group.getId(), users);
+			// Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
+			// users.add(user);
+			// addGroupUsers(group.getId(), users);
 		}
 	}
 
@@ -99,8 +96,7 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 				Iterator<UserId> e = new HashMap<UserId, Long>(userGroupsTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if (userGroupsTime.get(nextGroupId) != null
-							&& (now - userGroupsTime.get(nextGroupId)) > EXPIRATION_TIME) {
+					if (userGroupsTime.get(nextGroupId) != null && (now - userGroupsTime.get(nextGroupId)) > getExpirationTime()) {
 						// Object has expired.
 						removeUserGroups(nextGroupId);
 						nextGroupId = null;
@@ -123,8 +119,7 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 				Iterator<GroupId> e = new HashMap<GroupId, Long>(groupUsersTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if (groupUsersTime.get(nextGroupId) != null
-							&& (now - groupUsersTime.get(nextGroupId)) > EXPIRATION_TIME) {
+					if (groupUsersTime.get(nextGroupId) != null && (now - groupUsersTime.get(nextGroupId)) > getExpirationTime()) {
 						// Object has expired.
 						removeGroupUsers(nextGroupId);
 						nextGroupId = null;

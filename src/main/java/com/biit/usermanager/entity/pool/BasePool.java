@@ -101,6 +101,6 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> exte
 
 	@Override
 	public long getExpirationTime() {
-		return PoolConfigurationReader.getInstance().getExpirationTime();
+		return PoolConfigurationReader.getInstance().getStandardExpirationTime();
 	}
 }
