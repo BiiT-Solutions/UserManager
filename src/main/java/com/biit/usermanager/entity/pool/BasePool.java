@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.biit.usermanager.entity.IElement;
+import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 import com.biit.utils.pool.SimplePool;
 
 public abstract class BasePool<ElementId, Type extends IElement<ElementId>> extends SimplePool<ElementId, Type> {
@@ -102,6 +103,6 @@ public abstract class BasePool<ElementId, Type extends IElement<ElementId>> exte
 
 	@Override
 	public long getExpirationTime() {
-		return EXPIRATION_TIME;
+		return PoolConfigurationReader.getInstance().getExpirationTime();
 	}
 }
