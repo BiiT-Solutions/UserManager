@@ -12,8 +12,6 @@ import com.biit.utils.pool.SimplePool;
 
 public abstract class BasePool<ElementId, Type extends IElement<ElementId>> extends SimplePool<ElementId, Type> {
 
-	private final static long EXPIRATION_TIME = 300000;// 5 minutes
-
 	// Classification by string.
 	private Map<String, Long> elementsTagTime; // tag -> time.
 	private Map<String, Set<Type>> elementsByTag;
