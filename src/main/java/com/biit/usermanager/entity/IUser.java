@@ -13,6 +13,8 @@ public interface IUser<Id> extends IElement<Id> {
 	void setPassword(String password);
 
 	Locale getLocale();
+	
+	void setLocale(Locale locale);
 
 	String getLanguageId();
 
