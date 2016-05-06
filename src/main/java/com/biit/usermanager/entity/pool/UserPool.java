@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
 public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 
@@ -35,12 +36,14 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<UserId> e = new HashMap<UserId, Long>(getElementsTime()).keySet().iterator();
 				while (e.hasNext()) {
 					userId = e.next();
-					if (getElementsTime().get(userId) != null && (now - getElementsTime().get(userId)) > getExpirationTime()) {
+					if (getElementsTime().get(userId) != null
+							&& (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userId);
 						userId = null;
 					} else {
-						if (getElementsById().get(userId) != null && getElementsById().get(userId).getEmailAddress().equals(emailAddress)) {
+						if (getElementsById().get(userId) != null
+								&& getElementsById().get(userId).getEmailAddress().equals(emailAddress)) {
 							return getElementsById().get(userId);
 						}
 					}
@@ -62,12 +65,14 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<UserId> e = new HashMap<UserId, Long>(getElementsTime()).keySet().iterator();
 				while (e.hasNext()) {
 					userId = e.next();
-					if (getElementsTime().get(userId) != null && (now - getElementsTime().get(userId)) > getExpirationTime()) {
+					if (getElementsTime().get(userId) != null
+							&& (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userId);
 						userId = null;
 					} else {
-						if (getElementsById().get(userId) != null && getElementsById().get(userId).getUniqueName().equals(screenName)) {
+						if (getElementsById().get(userId) != null
+								&& getElementsById().get(userId).getUniqueName().equals(screenName)) {
 							return getElementsById().get(userId);
 						}
 					}
@@ -85,7 +90,8 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 				Iterator<RoleId> e = new HashMap<RoleId, Long>(usersOfRoleTime).keySet().iterator();
 				while (e.hasNext()) {
 					storedObject = e.next();
-					if (usersOfRoleTime.get(storedObject) != null && (now - usersOfRoleTime.get(storedObject)) > getExpirationTime()) {
+					if (usersOfRoleTime.get(storedObject) != null
+							&& (now - usersOfRoleTime.get(storedObject)) > getExpirationTime()) {
 						// object has expired
 						removeUsersOfRole(storedObject);
 						storedObject = null;
@@ -115,6 +121,11 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 			usersOfRole.remove(roleId);
 			usersOfRoleTime.remove(roleId);
 		}
+	}
+
+	@Override
+	public long getExpirationTime() {
+		return PoolConfigurationReader.getInstance().getUserPoolExpirationTime();
 	}
 
 	@Override

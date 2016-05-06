@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
 public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId>> {
 	// Group --> List<User>
@@ -96,7 +97,8 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 				Iterator<UserId> e = new HashMap<UserId, Long>(userGroupsTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if (userGroupsTime.get(nextGroupId) != null && (now - userGroupsTime.get(nextGroupId)) > getExpirationTime()) {
+					if (userGroupsTime.get(nextGroupId) != null
+							&& (now - userGroupsTime.get(nextGroupId)) > getExpirationTime()) {
 						// Object has expired.
 						removeUserGroups(nextGroupId);
 						nextGroupId = null;
@@ -119,7 +121,8 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 				Iterator<GroupId> e = new HashMap<GroupId, Long>(groupUsersTime).keySet().iterator();
 				while (e.hasNext()) {
 					nextGroupId = e.next();
-					if (groupUsersTime.get(nextGroupId) != null && (now - groupUsersTime.get(nextGroupId)) > getExpirationTime()) {
+					if (groupUsersTime.get(nextGroupId) != null
+							&& (now - groupUsersTime.get(nextGroupId)) > getExpirationTime()) {
 						// Object has expired.
 						removeGroupUsers(nextGroupId);
 						nextGroupId = null;
@@ -193,6 +196,11 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			userGroupsTime.remove(userId);
 			userGroups.remove(userId);
 		}
+	}
+
+	@Override
+	public long getExpirationTime() {
+		return PoolConfigurationReader.getInstance().getGroupPoolExpirationTime();
 	}
 
 	@Override

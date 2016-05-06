@@ -13,7 +13,7 @@ import com.biit.usermanager.security.IActivity;
 /**
  * Defines if an activity is authorized by an user or not.
  */
-public class AuthorizationPool {
+public class ActivityAuthorizationPool {
 
 	// user id -> time.
 	private Map<IUser<Long>, Long> time;
@@ -21,7 +21,7 @@ public class AuthorizationPool {
 	private Map<IUser<Long>, Map<IActivity, Boolean>> users;
 	private Map<IUser<Long>, Map<IGroup<Long>, Map<IActivity, Boolean>>> groups;
 
-	public AuthorizationPool() {
+	public ActivityAuthorizationPool() {
 		reset();
 	}
 
@@ -100,7 +100,8 @@ public class AuthorizationPool {
 						removeUser(authorizedUser);
 						authorizedUser = null;
 					} else if (user != null && user.equals(authorizedUser)) {
-						if (groups.get(user) != null && groups.get(user).get(organization) != null && activity != null) {
+						if (groups.get(user) != null && groups.get(user).get(organization) != null
+								&& activity != null) {
 							return groups.get(user).get(organization).get(activity);
 						}
 					}
@@ -120,13 +121,13 @@ public class AuthorizationPool {
 		}
 	}
 
+	public long getExpirationTime() {
+		return PoolConfigurationReader.getInstance().getActivityPoolExpirationTime();
+	}
+
 	public void reset() {
 		time = new HashMap<IUser<Long>, Long>();
 		users = new HashMap<IUser<Long>, Map<IActivity, Boolean>>();
 		groups = new HashMap<IUser<Long>, Map<IGroup<Long>, Map<IActivity, Boolean>>>();
-	}
-
-	public long getExpirationTime() {
-		return PoolConfigurationReader.getInstance().getStandardExpirationTime();
 	}
 }
