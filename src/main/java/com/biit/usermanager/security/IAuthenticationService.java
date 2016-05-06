@@ -8,8 +8,7 @@ import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthenticationService<UserId, GroupId> {
 
-	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException,
-			AuthenticationRequired, InvalidCredentialsException;
+	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException, AuthenticationRequired, InvalidCredentialsException;
 
 	IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
 
@@ -20,5 +19,7 @@ public interface IAuthenticationService<UserId, GroupId> {
 	boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException;
 
 	IUser<UserId> updatePassword(IUser<UserId> user, String plainTextPassword) throws UserManagementException;
+
+	IUser<Long> updateUser(IUser<Long> user) throws UserManagementException;
 
 }
