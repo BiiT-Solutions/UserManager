@@ -13,7 +13,7 @@ public interface IUser<Id> extends IElement<Id> {
 	void setPassword(String password);
 
 	Locale getLocale();
-	
+
 	void setLocale(Locale locale);
 
 	String getLanguageId();
@@ -21,5 +21,9 @@ public interface IUser<Id> extends IElement<Id> {
 	String getFirstName();
 
 	String getLastName();
+
+	String setSurname(String surname);
+
+	String setName(String name);
 
 }
