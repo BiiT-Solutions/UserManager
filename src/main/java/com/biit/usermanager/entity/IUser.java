@@ -6,24 +6,24 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getEmailAddress();
 
+	String getFirstName();
+
+	String getLanguageId();
+
+	String getLastName();
+
+	Locale getLocale();
+
 	String getPassword();
 
 	String getUniqueName();
 
-	void setPassword(String password);
+	void setFirstname(String name);
 
-	Locale getLocale();
+	void setLastname(String surname);
 
 	void setLocale(Locale locale);
 
-	String getLanguageId();
-
-	String getFirstName();
-
-	String getLastName();
-
-	String setSurname(String surname);
-
-	String setName(String name);
+	void setPassword(String password);
 
 }
