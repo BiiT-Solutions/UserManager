@@ -22,4 +22,6 @@ public interface IAuthenticationService<UserId, GroupId> {
 
 	IUser<Long> updateUser(IUser<Long> user) throws UserManagementException;
 
+	void reset();
+
 }
