@@ -8,7 +8,8 @@ import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthenticationService<UserId, GroupId> {
 
-	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException, AuthenticationRequired, InvalidCredentialsException;
+	IUser<UserId> authenticate(String userMail, String password) throws UserManagementException, AuthenticationRequired,
+			InvalidCredentialsException;
 
 	IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
 
