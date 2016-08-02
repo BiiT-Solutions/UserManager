@@ -18,9 +18,9 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getUniqueName();
 
-	void setFirstname(String name);
+	void setFirstName(String name);
 
-	void setLastname(String surname);
+	void setLastName(String surname);
 
 	void setLocale(Locale locale);
 
