@@ -16,8 +16,6 @@ public interface IUser<Id> extends IElement<Id> {
 
 	String getPassword();
 
-	String getUniqueName();
-
 	void setFirstName(String name);
 
 	void setLastName(String surname);
