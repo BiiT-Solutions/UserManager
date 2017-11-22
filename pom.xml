@@ -4,7 +4,7 @@
 	<groupId>com.biit</groupId>
 	<artifactId>user-manager</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.59</version>
+	<version>0.1.60-SNAPSHOT</version>
 	<name>User Manager Common Utils</name>
 	<description>Basic functionality for user authentication</description>
 
@@ -24,7 +24,7 @@
 	<scm>
 		<connection>scm:git:git.biit-solutions.com:UserManager.git</connection>
 		<developerConnection>scm:git:git.biit-solutions.com:UserManager.git</developerConnection>
-		<tag>user-manager-0.1.59</tag>
+		<tag>user-manager</tag>
 	</scm>
 
 	<properties>
