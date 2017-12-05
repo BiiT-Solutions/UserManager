@@ -158,8 +158,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return
 	 * @throws UserManagementException
 	 */
-	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity)
-			throws UserManagementException;
+	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity) throws UserManagementException;
 
 	/**
 	 * Clear all cached instances.
@@ -175,5 +174,31 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @throws UserManagementException
 	 */
 	Set<IUser<UserId>> getUsers(IRole<RoleId> role, IGroup<GroupId> organization) throws UserManagementException;
+
+	/**
+	 * Return all user's organization of the application that is not a
+	 * suborganization. An organization is valid if it has a role that exists in
+	 * the application and has no parent organization.
+	 * 
+	 * @param user
+	 *            the selected user.
+	 * @return a set of organizations.
+	 * @throws UserManagementException
+	 */
+	Set<IGroup<Long>> getUserParentOrganizations(IUser<Long> user) throws UserManagementException;
+
+	/**
+	 * Return all user's organization of the application that is a
+	 * suborganization. An organization is valid if it has a role that exists in
+	 * the application and has a parent organization.
+	 * 
+	 * @param user
+	 *            the selected user
+	 * @param parentOrganization
+	 *            the parent organization.
+	 * @return a set of organizations
+	 * @throws UserManagementException
+	 */
+	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException;
 
 }
