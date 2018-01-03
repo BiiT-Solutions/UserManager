@@ -8,7 +8,6 @@ import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthorizationService<UserId, GroupId, RoleId> {
-
 	/**
 	 * Get all users.
 	 * 
@@ -158,7 +157,8 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return
 	 * @throws UserManagementException
 	 */
-	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity) throws UserManagementException;
+	boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity)
+			throws UserManagementException;
 
 	/**
 	 * Clear all cached instances.
@@ -177,8 +177,8 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	/**
 	 * Return all user's organization of the application that is not a
-	 * suborganization. An organization is valid if it has a role that exists in
-	 * the application and has no parent organization.
+	 * suborganization. An organization is valid if it has a role that exists in the
+	 * application and has no parent organization.
 	 * 
 	 * @param user
 	 *            the selected user.
@@ -188,9 +188,9 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	Set<IGroup<Long>> getUserParentOrganizations(IUser<Long> user) throws UserManagementException;
 
 	/**
-	 * Return all user's organization of the application that is a
-	 * suborganization. An organization is valid if it has a role that exists in
-	 * the application and has a parent organization.
+	 * Return all user's organization of the application that is a suborganization.
+	 * An organization is valid if it has a role that exists in the application and
+	 * has a parent organization.
 	 * 
 	 * @param user
 	 *            the selected user
@@ -199,6 +199,26 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return a set of organizations
 	 * @throws UserManagementException
 	 */
-	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException;
+	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization)
+			throws UserManagementException;
+
+	boolean addUserRole(IUser<UserId> user, IRole<RoleId> role) throws UserManagementException;
+
+	boolean addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role)
+			throws UserManagementException;
+
+	boolean addUserToOrganization(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
+
+	void removeUserFromOrganization(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
+
+	IGroup<Long> getDefaultCompany() throws UserManagementException;
+
+	boolean deleteOrganization(IGroup<Long> company, Long organization) throws UserManagementException;
+
+	IGroup<Long> updateOrganization(IGroup<Long> company, Long organizationId, Long parentOrganizationId, String name,
+			Long regionId, Long countryId, String comments, boolean site) throws UserManagementException;
+
+	IGroup<Long> addOrganization(IGroup<Long> company, Long parentOrganizationId, String name, Long regionId,
+			Long countryId, String comments) throws UserManagementException;
 
 }
