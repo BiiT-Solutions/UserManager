@@ -205,4 +205,8 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	boolean addUserOrganizationRole(IUser<Long> user, IGroup<Long> organization, IRole<Long> role) throws UserManagementException;
 
+	IRoleActivities getRoleActivities();
+
+	void setRoleActivities(IRoleActivities roleActivities);
+
 }
