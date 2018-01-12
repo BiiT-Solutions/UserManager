@@ -25,7 +25,9 @@ public interface IAuthenticationService<UserId, GroupId> {
 
 	void reset();
 
-	IUser<UserId> addUser(IGroup<Long> company, String password, String screenName, String emailAddress, String locale,
+	IUser<UserId> addUser(IGroup<GroupId> company, String password, String screenName, String emailAddress, String locale,
 			String firstName, String middleName, String lastName) throws UserManagementException;
+
+	void deleteUser(IUser<UserId> user) throws UserManagementException;
 
 }

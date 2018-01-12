@@ -207,18 +207,4 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	boolean addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role)
 			throws UserManagementException;
 
-	boolean addUserToOrganization(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
-
-	void removeUserFromOrganization(IUser<UserId> user, IGroup<GroupId> organization) throws UserManagementException;
-
-	IGroup<Long> getDefaultCompany() throws UserManagementException;
-
-	boolean deleteOrganization(IGroup<Long> company, Long organization) throws UserManagementException;
-
-	IGroup<Long> updateOrganization(IGroup<Long> company, Long organizationId, Long parentOrganizationId, String name,
-			Long regionId, Long countryId, String comments, boolean site) throws UserManagementException;
-
-	IGroup<Long> addOrganization(IGroup<Long> company, Long parentOrganizationId, String name, Long regionId,
-			Long countryId, String comments) throws UserManagementException;
-
 }
