@@ -68,6 +68,14 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	IRole<RoleId> getRole(String roleName) throws UserManagementException;
 
 	/**
+	 * Get the activities associated to this role.
+	 * 
+	 * @param role
+	 * @return
+	 */
+	Set<IActivity> getRoleActivities(IRole<RoleId> role);
+
+	/**
 	 * Get the roles for this group.
 	 * 
 	 * @param group
