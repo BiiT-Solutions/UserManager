@@ -68,14 +68,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	IRole<RoleId> getRole(String roleName) throws UserManagementException;
 
 	/**
-	 * Get the activities associated to this role.S *
-	 * 
-	 * @param role
-	 * @return
-	 */
-	Set<IActivity> getRoleActivities(IRole<RoleId> role);
-
-	/**
 	 * Get the roles for this group.
 	 * 
 	 * @param group
@@ -200,5 +192,9 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @throws UserManagementException
 	 */
 	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException;
+
+	boolean addUserRole(IUser<Long> user, IRole<Long> role) throws UserManagementException;
+
+	boolean addUserOrganizationRole(IUser<Long> user, IGroup<Long> organization, IRole<Long> role) throws UserManagementException;
 
 }
