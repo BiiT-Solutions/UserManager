@@ -53,7 +53,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * 
 	 * @param roleId
 	 * @return
-	 * @throws UserManagementException
+	 * @throws UserManagementExceptionkss	
 	 */
 	IRole<RoleId> getRole(RoleId roleId) throws UserManagementException;
 
@@ -67,7 +67,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	IRole<RoleId> getRole(String roleName) throws UserManagementException;
 
 	/**
-	 * Get the activities associated to this role.S *
+	 * Get the activities associated to this role.
 	 * 
 	 * @param role
 	 * @return
