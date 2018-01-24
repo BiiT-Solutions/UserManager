@@ -14,7 +14,7 @@ public interface IAuthenticationService<UserId, GroupId> {
 
 	IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
 
-	IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException;
+	IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException;
 
 	IUser<UserId> getUserById(long userId) throws UserManagementException;
 
