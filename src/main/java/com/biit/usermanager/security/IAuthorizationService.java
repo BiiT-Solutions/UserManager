@@ -199,11 +199,11 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return a set of organizations
 	 * @throws UserManagementException
 	 */
-	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException;
+	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<UserId> user, IGroup<GroupId> parentOrganization) throws UserManagementException;
 
-	void addUserRole(IUser<Long> user, IRole<Long> role) throws UserManagementException;
+	void addUserRole(IUser<UserId> user, IRole<RoleId> role) throws UserManagementException;
 
-	void addUserOrganizationRole(IUser<Long> user, IGroup<Long> organization, IRole<Long> role) throws UserManagementException;
+	void addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role) throws UserManagementException;
 
 	IRoleActivities getRoleActivities();
 
