@@ -201,9 +201,9 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 */
 	Set<IGroup<Long>> getUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException;
 
-	boolean addUserRole(IUser<Long> user, IRole<Long> role) throws UserManagementException;
+	void addUserRole(IUser<Long> user, IRole<Long> role) throws UserManagementException;
 
-	boolean addUserOrganizationRole(IUser<Long> user, IGroup<Long> organization, IRole<Long> role) throws UserManagementException;
+	void addUserOrganizationRole(IUser<Long> user, IGroup<Long> organization, IRole<Long> role) throws UserManagementException;
 
 	IRoleActivities getRoleActivities();
 
