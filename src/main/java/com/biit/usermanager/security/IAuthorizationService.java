@@ -5,6 +5,7 @@ import java.util.Set;
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IRole;
 import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.security.exceptions.RoleDoesNotExistsException;
 import com.biit.usermanager.security.exceptions.UserManagementException;
 
 public interface IAuthorizationService<UserId, GroupId, RoleId> {
@@ -56,7 +57,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @return
 	 * @throws UserManagementException
 	 */
-	IRole<RoleId> getRole(RoleId roleId) throws UserManagementException;
+	IRole<RoleId> getRole(RoleId roleId) throws UserManagementException, RoleDoesNotExistsException;
 
 	/**
 	 * Get a role from its name.
@@ -64,8 +65,9 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 	 * @param roleName
 	 * @return
 	 * @throws UserManagementException
+	 * @throws RoleDoesNotExistsException
 	 */
-	IRole<RoleId> getRole(String roleName) throws UserManagementException;
+	IRole<RoleId> getRole(String roleName) throws UserManagementException, RoleDoesNotExistsException;
 
 	/**
 	 * Get the activities associated to this role.
