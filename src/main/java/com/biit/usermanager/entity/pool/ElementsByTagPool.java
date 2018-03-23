@@ -10,13 +10,13 @@ import com.biit.usermanager.entity.IElement;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 import com.biit.utils.pool.SimplePool;
 
-public abstract class BasePool<ElementId, Type extends IElement<ElementId>> extends SimplePool<ElementId, Type> {
+public abstract class ElementsByTagPool<ElementId, Type extends IElement<ElementId>> extends SimplePool<ElementId, Type> {
 
 	// Classification by string.
 	private Map<String, Long> elementsTagTime; // tag -> time.
 	private Map<String, Set<Type>> elementsByTag;
 
-	public BasePool() {
+	public ElementsByTagPool() {
 		reset();
 	}
 

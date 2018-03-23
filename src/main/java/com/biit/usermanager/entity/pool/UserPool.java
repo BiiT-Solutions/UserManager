@@ -8,7 +8,7 @@ import java.util.Map;
 import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
-public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
+public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<UserId>> {
 
 	private Map<RoleId, List<IUser<UserId>>> usersOfRole;
 	private Map<RoleId, Long> usersOfRoleTime; // User id -> getElementsTime().

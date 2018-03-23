@@ -12,7 +12,7 @@ import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
-public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId>> {
+public class GroupPool<UserId, GroupId> extends ElementsByTagPool<GroupId, IGroup<GroupId>> {
 	// Group --> List<User>
 	private Map<GroupId, Long> groupUsersTime; // group id -> time.
 	private Map<GroupId, Set<IUser<UserId>>> groupUsers; // Users by group.

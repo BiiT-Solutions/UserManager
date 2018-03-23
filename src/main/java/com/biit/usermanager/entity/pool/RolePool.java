@@ -11,7 +11,7 @@ import com.biit.usermanager.entity.IRole;
 import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
-public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<RoleId>> {
+public class RolePool<UserId, GroupId, RoleId> extends ElementsByTagPool<RoleId, IRole<RoleId>> {
 
 	private Map<UserId, Long> userTime; // user id -> time.
 	private Map<UserId, Set<IRole<RoleId>>> rolesByUser; // Roles by user.
