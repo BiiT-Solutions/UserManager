@@ -108,7 +108,7 @@ public class UserPool<UserId, RoleId> extends BasePool<UserId, IUser<UserId>> {
 
 	public void removeUser(IUser<UserId> user) {
 		if (user != null) {
-			removeUser(user.getId());
+			removeUser(user.getUniqueId());
 		}
 	}
 

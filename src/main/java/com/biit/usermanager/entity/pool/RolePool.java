@@ -52,7 +52,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 	}
 
 	public void addGroupRoles(IGroup<GroupId> group, Set<IRole<RoleId>> roles) {
-		addGroupRoles(group.getId(), roles);
+		addGroupRoles(group.getUniqueId(), roles);
 	}
 
 	public void addUserRole(IUser<UserId> user, IRole<RoleId> role) {
@@ -65,8 +65,8 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public void addUserRoles(IUser<UserId> user, Set<IRole<RoleId>> roles) {
 		if (user != null && roles != null && roles.size() > 0) {
-			userTime.put(user.getId(), System.currentTimeMillis());
-			Set<IRole<RoleId>> userRoles = rolesByUser.get(user.getId());
+			userTime.put(user.getUniqueId(), System.currentTimeMillis());
+			Set<IRole<RoleId>> userRoles = rolesByUser.get(user.getUniqueId());
 			if (userRoles == null) {
 				userRoles = new HashSet<IRole<RoleId>>();
 			}
@@ -77,13 +77,13 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 				}
 			}
 
-			rolesByUser.put(user.getId(), userRoles);
+			rolesByUser.put(user.getUniqueId(), userRoles);
 		}
 	}
 
 	public void addUserRolesOfGroup(IUser<UserId> user, IGroup<GroupId> group, Set<IRole<RoleId>> roles) {
 		if (user != null && group != null) {
-			addUserRolesOfGroup(user.getId(), group.getId(), roles);
+			addUserRolesOfGroup(user.getUniqueId(), group.getUniqueId(), roles);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 	 * @return
 	 */
 	public Set<IRole<RoleId>> getGroupRoles(IGroup<GroupId> group) {
-		return getGroupRoles(group.getId());
+		return getGroupRoles(group.getUniqueId());
 	}
 
 	public Set<IRole<RoleId>> getUserRoles(IUser<UserId> user) {
@@ -164,7 +164,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 						removeUserRoles(userId);
 						userId = null;
 					} else {
-						if (user.getId().equals(userId)) {
+						if (user.getUniqueId().equals(userId)) {
 							return rolesByUser.get(userId);
 						}
 					}
@@ -176,7 +176,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public Set<IRole<RoleId>> getUserRolesOfGroup(IUser<UserId> user, IGroup<GroupId> group) {
 		if (user != null && group != null) {
-			return getUserRolesOfGroup(user.getId(), group.getId());
+			return getUserRolesOfGroup(user.getUniqueId(), group.getUniqueId());
 		}
 		return null;
 	}
@@ -222,12 +222,12 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 	}
 
 	public void removeGroupRole(IRole<RoleId> role, IGroup<GroupId> group) {
-		removeGroupRole(role, group.getId());
+		removeGroupRole(role, group.getUniqueId());
 	}
 
 	public void removeGroupRoles(IGroup<GroupId> group) {
 		if (group != null) {
-			removeGroupRoles(group.getId());
+			removeGroupRoles(group.getUniqueId());
 		}
 	}
 
@@ -255,7 +255,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public void removeUserRole(IUser<UserId> user, IRole<RoleId> role) {
 		if (user != null && role != null) {
-			Set<IRole<RoleId>> userRoles = rolesByUser.get(user.getId());
+			Set<IRole<RoleId>> userRoles = rolesByUser.get(user.getUniqueId());
 			if (userRoles != null) {
 				userRoles.remove(role);
 			}
@@ -264,7 +264,7 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public void removeUserRoles(IUser<UserId> user) {
 		if (user != null) {
-			removeUserRoles(user.getId());
+			removeUserRoles(user.getUniqueId());
 		}
 	}
 
@@ -300,8 +300,8 @@ public class RolePool<UserId, GroupId, RoleId> extends BasePool<RoleId, IRole<Ro
 
 	public void setUserRoles(IUser<UserId> user, Set<IRole<RoleId>> roles) {
 		if (user != null && roles != null) {
-			userTime.put(user.getId(), System.currentTimeMillis());
-			rolesByUser.put(user.getId(), roles);
+			userTime.put(user.getUniqueId(), System.currentTimeMillis());
+			rolesByUser.put(user.getUniqueId(), roles);
 		}
 	}
 }

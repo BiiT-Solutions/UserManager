@@ -56,13 +56,13 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 
 	public void addUserToGroup(IUser<UserId> user, IGroup<GroupId> group) {
 		if (user != null && group != null) {
-			Set<IGroup<GroupId>> groups = getGroups(user.getId());
+			Set<IGroup<GroupId>> groups = getGroups(user.getUniqueId());
 			if (groups == null) {
 				groups = new HashSet<IGroup<GroupId>>();
 			}
 			groups.add(group);
-			userGroupsTime.put(user.getId(), System.currentTimeMillis());
-			userGroups.put(user.getId(), groups);
+			userGroupsTime.put(user.getUniqueId(), System.currentTimeMillis());
+			userGroups.put(user.getUniqueId(), groups);
 
 			// Set<IUser<UserId>> users = new HashSet<IUser<UserId>>();
 			// users.add(user);
@@ -158,16 +158,16 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 
 	public void removeUser(IUser<UserId> user) {
 		if (user != null) {
-			removeUserGroups(user.getId());
+			removeUserGroups(user.getUniqueId());
 			for (GroupId groupId : groupUsers.keySet()) {
-				removeUserFromGroups(user.getId(), groupId);
+				removeUserFromGroups(user.getUniqueId(), groupId);
 			}
 		}
 	}
 
 	public void removeUserFromGroups(IUser<UserId> user, IGroup<GroupId> group) {
 		if (user != null && group != null) {
-			removeUserFromGroups(user.getId(), group.getId());
+			removeUserFromGroups(user.getUniqueId(), group.getUniqueId());
 		}
 	}
 
@@ -176,14 +176,14 @@ public class GroupPool<UserId, GroupId> extends BasePool<GroupId, IGroup<GroupId
 			if (groupUsers.get(groupId) != null) {
 				List<IUser<UserId>> tempUsers = new ArrayList<IUser<UserId>>(groupUsers.get(groupId));
 				for (IUser<UserId> user : tempUsers) {
-					if (user.getId().equals(userId)) {
+					if (user.getUniqueId().equals(userId)) {
 						groupUsers.get(groupId).remove(user);
 					}
 				}
 			}
 			if (userGroups.get(userId) != null) {
 				for (IGroup<GroupId> group : new HashSet<IGroup<GroupId>>(userGroups.get(userId))) {
-					if (group.getId().equals(groupId)) {
+					if (group.getUniqueId().equals(groupId)) {
 						userGroups.get(userId).remove(group);
 					}
 				}
