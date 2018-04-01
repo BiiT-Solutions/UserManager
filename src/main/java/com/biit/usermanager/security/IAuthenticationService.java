@@ -31,4 +31,11 @@ public interface IAuthenticationService<UserId, GroupId> {
 
 	void deleteUser(IUser<UserId> user) throws UserManagementException;
 
+	/**
+	 * If Spring is not available, create the required services. Be carefull, if
+	 * created on this way, each service uses its own pool and is not shared
+	 * with other different beans.
+	 */
+	void createBeans();
+
 }
