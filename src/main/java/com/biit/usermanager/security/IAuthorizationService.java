@@ -211,4 +211,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	void setRoleActivities(IRoleActivities roleActivities);
 
+	void createBeans();
+
 }
