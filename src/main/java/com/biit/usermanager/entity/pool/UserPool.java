@@ -39,7 +39,7 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 					if (getElementsTime().get(userId) != null
 							&& (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
-						removeUser(userId);
+						removeElement(userId);
 						userId = null;
 					} else {
 						if (getElementsById().get(userId) != null
@@ -68,7 +68,7 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 					if (getElementsTime().get(userId) != null
 							&& (now - getElementsTime().get(userId)) > getExpirationTime()) {
 						// object has expired
-						removeUser(userId);
+						removeElement(userId);
 						userId = null;
 					} else {
 						if (getElementsById().get(userId) != null
@@ -108,12 +108,8 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 
 	public void removeUser(IUser<UserId> user) {
 		if (user != null) {
-			removeUser(user.getUniqueId());
+			removeElement(user.getUniqueId());
 		}
-	}
-
-	public void removeUser(UserId userId) {
-		removeElement(userId);
 	}
 
 	public void removeUsersOfRole(RoleId roleId) {
