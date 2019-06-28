@@ -107,15 +107,17 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 		return null;
 	}
 
-	public void removeUser(IUser<UserId> user) {
+	public IUser<UserId> removeUser(IUser<UserId> user) {
 		if (user != null) {
 			try {
 				IUser<UserId> removedUser = removeElement(user.getUniqueId());
 				BiitPoolLogger.info(this.getClass(), "Removed element '" + removedUser + "'.");
+				return removedUser;
 			} catch (NoSuchMethodError e) {
 				BiitPoolLogger.errorMessageNotification(this.getClass(), e);
 			}
 		}
+		return null;
 	}
 
 	public void removeUsersOfRole(RoleId roleId) {
