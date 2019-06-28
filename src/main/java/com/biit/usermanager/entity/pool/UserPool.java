@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.biit.logger.BiitCommonLogger;
 import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 
@@ -108,7 +109,11 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 
 	public void removeUser(IUser<UserId> user) {
 		if (user != null) {
-			removeElement(user.getUniqueId());
+			try {
+				removeElement(user.getUniqueId());
+			} catch (NoSuchMethodError e) {
+				BiitCommonLogger.errorMessageNotification(this.getClass(), e);
+			}
 		}
 	}
 
