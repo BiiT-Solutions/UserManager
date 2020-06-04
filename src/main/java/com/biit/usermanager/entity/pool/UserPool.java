@@ -111,7 +111,6 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
 		if (user != null) {
 			try {
 				IUser<UserId> removedUser = removeElement(user.getUniqueId());
-				System.out.println( "Removed element '" + removedUser + "'.");
 				BiitPoolLogger.info(this.getClass(), "Removed element '" + removedUser + "'.");
 				return removedUser;
 			} catch (NoSuchMethodError e) {

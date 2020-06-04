@@ -213,4 +213,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
 	void createBeans();
 
+	void cleanUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization);
+
 }
