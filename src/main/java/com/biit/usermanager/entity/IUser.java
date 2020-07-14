@@ -2,7 +2,7 @@ package com.biit.usermanager.entity;
 
 import java.util.Locale;
 
-public interface IUser<Id> extends IElement<Id> {
+public interface IUser<Id> extends IElement<Id>, Comparable<IUser<Id>> {
 
 	String getEmailAddress();
 
