@@ -23,7 +23,7 @@
 
 	<scm>
 		<connection>scm:git:git.biit-solutions.com:BiiT/UserManager.git</connection>
-		<connection>scm:git:git.biit-solutions.com:BiiT/UserManager.git</developerConnection>
+		<developerConnection>scm:git:git.biit-solutions.com:BiiT/UserManager.git</developerConnection>
 		<tag>user-manager</tag>
 	</scm>
 
