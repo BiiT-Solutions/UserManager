@@ -8,6 +8,13 @@
 	<name>User Manager Common Utils</name>
 	<description>Basic functionality for user authentication</description>
 
+	<parent>
+		<groupId>com.biit</groupId>
+		<artifactId>versions</artifactId>
+		<version>[0.1,0.2)</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<distributionManagement>
 		<repository>
 			<id>central</id>
@@ -27,31 +34,8 @@
 		<tag>user-manager</tag>
 	</scm>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.jdk.version>1.6</java.jdk.version>
-		<plugin.compiler.version>2.3.2</plugin.compiler.version>
-		<plugin.exec.version>1.2.1</plugin.exec.version>
-		<org.testng.version>6.8</org.testng.version>
-		<jackson.version>2.3.0</jackson.version>
-		<surefire.version>2.16</surefire.version>
-		<apache-commons.version>1.9</apache-commons.version>
-		<apache-httpclient.version>4.3.1</apache-httpclient.version>
-		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
-		<maven-scm-provider-gitexe.version>1.9.2</maven-scm-provider-gitexe.version>
-		<project.scm.id>git</project.scm.id>
-		<log4j.version>1.2.17</log4j.version>
-		<!-- BiiT dependencies -->
-		<biit-common-utils.version>[1.0,1.1)</biit-common-utils.version>
-	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -73,7 +57,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${plugin.compiler.version}</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${java.jdk.version}</source>
 					<target>${java.jdk.version}</target>
@@ -82,10 +66,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${surefire.version}</version>
+				<version>${maven-surefire.version}</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/test/config/testng.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<useSystemClassLoader>false</useSystemClassLoader>
 				</configuration>

@@ -7,4 +7,5 @@ bin
 project.properties
 output.log
 tmp
-
+.idea
+*.iml
