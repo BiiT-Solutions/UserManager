@@ -7,4 +7,8 @@ public class UserManagementException extends Exception {
 		super(message);
 	}
 
+	public UserManagementException(String message, Throwable e) {
+		super(message, e);
+	}
+
 }

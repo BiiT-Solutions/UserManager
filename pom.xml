@@ -4,7 +4,7 @@
 	<groupId>com.biit</groupId>
 	<artifactId>user-manager</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.90-SNAPSHOT</version>
+	<version>0.2.5-SNAPSHOT</version>
 	<name>User Manager Common Utils</name>
 	<description>Basic functionality for user authentication</description>
 
@@ -19,18 +19,18 @@
 		<repository>
 			<id>central</id>
 			<name>libs-releases</name>
-			<url>https://dev.biit-solutions.com/artifactory/libs-release</url>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-release</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>libs-snapshot</name>
-			<url>https://dev.biit-solutions.com/artifactory/libs-snapshot</url>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git:git.biit-solutions.com:UserManager.git</connection>
-		<developerConnection>scm:git:git.biit-solutions.com:UserManager.git</developerConnection>
+		<connection>scm:git:git.biit-solutions.com:BiiT/UserManager.git</connection>
+		<developerConnection>scm:git:git.biit-solutions.com:BiiT/UserManager.git</developerConnection>
 		<tag>user-manager</tag>
 	</scm>
 
