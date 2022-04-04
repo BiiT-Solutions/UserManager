@@ -1,14 +1,14 @@
 package com.biit.usermanager.entity.pool;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.entity.pool.config.PoolConfigurationReader;
 import com.biit.usermanager.security.IActivity;
+import com.biit.utils.annotations.FindBugsSuppressWarnings;
+
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Defines if an activity is authorized by an user or not.
@@ -27,9 +27,7 @@ public class ActivityAuthorizationPool {
 
 	public void addUser(IUser<Long> user, IActivity activity, Boolean authorized) {
 		if (user != null && activity != null && authorized != null) {
-			if (users.get(user) == null) {
-				users.put(user, new Hashtable<IActivity, Boolean>());
-			}
+			users.computeIfAbsent(user, k -> new Hashtable<>());
 
 			time.put(user, System.currentTimeMillis());
 			users.get(user).put(activity, authorized);
@@ -38,13 +36,9 @@ public class ActivityAuthorizationPool {
 
 	public void addUser(IUser<Long> user, IGroup<Long> organization, IActivity activity, Boolean authorized) {
 		if (user != null && organization != null && activity != null && authorized != null) {
-			if (groups.get(user) == null) {
-				groups.put(user, new HashMap<IGroup<Long>, Map<IActivity, Boolean>>());
-			}
+			groups.computeIfAbsent(user, k -> new HashMap<>());
 
-			if (groups.get(user).get(organization) == null) {
-				groups.get(user).put(organization, new HashMap<IActivity, Boolean>());
-			}
+			groups.get(user).computeIfAbsent(organization, k -> new HashMap<>());
 
 			groups.get(user).get(organization).put(activity, authorized);
 			time.put(user, System.currentTimeMillis());
@@ -54,25 +48,23 @@ public class ActivityAuthorizationPool {
 	/**
 	 * Returns true or false if the activity is authorized and null if is not
 	 * catched.
-	 * 
-	 * @param form
+	 *
 	 * @param user
 	 * @param activity
 	 * @return
 	 */
+	@FindBugsSuppressWarnings("NP_BOOLEAN_RETURN_NULL")
 	public Boolean isAuthorizedActivity(IUser<Long> user, IActivity activity) {
 		long now = System.currentTimeMillis();
-		IUser<Long> userForm = null;
+		IUser<Long> userForm;
 
 		if (time.size() > 0) {
-			Iterator<IUser<Long>> userEnum = new HashMap<IUser<Long>, Long>(time).keySet().iterator();
-			while (userEnum.hasNext()) {
-				userForm = userEnum.next();
+			for (IUser<Long> longIUser : new HashMap<>(time).keySet()) {
+				userForm = longIUser;
 				try {
 					if (time.get(userForm) != null && (now - time.get(userForm)) > getExpirationTime()) {
 						// object has expired
 						removeUser(userForm);
-						userForm = null;
 					} else if (user != null && user.equals(userForm)) {
 						if (users.get(user) != null && activity != null) {
 							return users.get(user).get(activity);
@@ -86,19 +78,18 @@ public class ActivityAuthorizationPool {
 		return null;
 	}
 
+	@FindBugsSuppressWarnings("NP_BOOLEAN_RETURN_NULL")
 	public Boolean isAuthorizedActivity(IUser<Long> user, IGroup<Long> organization, IActivity activity) {
 		long now = System.currentTimeMillis();
-		IUser<Long> authorizedUser = null;
+		IUser<Long> authorizedUser;
 
 		if (time.size() > 0) {
-			Iterator<IUser<Long>> userEnum = new HashMap<IUser<Long>, Long>(time).keySet().iterator();
-			while (userEnum.hasNext()) {
-				authorizedUser = userEnum.next();
+			for (IUser<Long> longIUser : new HashMap<>(time).keySet()) {
+				authorizedUser = longIUser;
 				try {
 					if (time.get(authorizedUser) != null && (now - time.get(authorizedUser)) > getExpirationTime()) {
 						// object has expired
 						removeUser(authorizedUser);
-						authorizedUser = null;
 					} else if (user != null && user.equals(authorizedUser)) {
 						if (groups.get(user) != null && groups.get(user).get(organization) != null
 								&& activity != null) {
@@ -126,8 +117,8 @@ public class ActivityAuthorizationPool {
 	}
 
 	public void reset() {
-		time = new HashMap<IUser<Long>, Long>();
-		users = new HashMap<IUser<Long>, Map<IActivity, Boolean>>();
-		groups = new HashMap<IUser<Long>, Map<IGroup<Long>, Map<IActivity, Boolean>>>();
+		time = new HashMap<>();
+		users = new HashMap<>();
+		groups = new HashMap<>();
 	}
 }
