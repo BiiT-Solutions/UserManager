@@ -113,7 +113,7 @@ public class ActivityAuthorizationPool {
 	}
 
 	public long getExpirationTime() {
-		return PoolConfigurationReader.getInstance().getActivitiPoolExpirationTime();
+		return PoolConfigurationReader.getInstance().getActivityPoolExpirationTime();
 	}
 
 	public void reset() {
