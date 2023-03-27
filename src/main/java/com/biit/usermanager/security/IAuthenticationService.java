@@ -16,7 +16,7 @@ public interface IAuthenticationService<UserId, GroupId> {
 
 	IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException;
 
-	IUser<UserId> getUserById(long userId) throws UserManagementException;
+	IUser<UserId> getUserById(long userId) throws UserManagementException, UserDoesNotExistException;
 
 	boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException;
 
