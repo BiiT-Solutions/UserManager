@@ -14,15 +14,15 @@ public interface IAuthenticationService<UserId, GroupId> {
 
     IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
 
-    IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException;
+    IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
-    IUser<UserId> getUserById(long userId) throws UserManagementException, UserDoesNotExistException;
+    IUser<UserId> getUserById(long userId) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
     boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException;
 
     IUser<UserId> updatePassword(IUser<UserId> user, String plainTextPassword) throws UserDoesNotExistException, InvalidCredentialsException, UserManagementException;
 
-    IUser<Long> updateUser(IUser<Long> user) throws UserManagementException;
+    IUser<Long> updateUser(IUser<Long> user) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
     void reset();
 
@@ -32,7 +32,7 @@ public interface IAuthenticationService<UserId, GroupId> {
     void deleteUser(IUser<UserId> user) throws UserManagementException;
 
     /**
-     * If Spring is not available, create the required services. Be carefull, if
+     * If Spring is not available, create the required services. Be careful, if
      * created on this way, each service uses its own pool and is not shared
      * with other different beans.
      */

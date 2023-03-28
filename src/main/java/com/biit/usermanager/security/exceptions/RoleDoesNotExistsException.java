@@ -7,4 +7,8 @@ public class RoleDoesNotExistsException extends Exception {
 		super(message);
 	}
 
+	public RoleDoesNotExistsException(String message, Throwable e) {
+		super(message, e);
+	}
+
 }
