@@ -4,7 +4,7 @@
 	<groupId>com.biit</groupId>
 	<artifactId>user-manager</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2.47-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>User Manager Common Utils</name>
 	<description>Basic functionality for user authentication</description>
 

@@ -29,6 +29,8 @@ public interface IAuthenticationService<UserId, GroupId> {
     IUser<UserId> addUser(IGroup<GroupId> company, String password, String screenName, String emailAddress, String locale, String firstName, String middleName,
                           String lastName) throws UserManagementException, InvalidCredentialsException;
 
+    IUser<UserId> addUser(IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
+
     void deleteUser(IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
 
     /**
