@@ -12,13 +12,13 @@ public interface IAuthenticationService<UserId, GroupId> {
     IUser<UserId> authenticate(String userMail, String password) throws UserManagementException, AuthenticationRequired, InvalidCredentialsException,
             UserDoesNotExistException;
 
-    IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException;
+    IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
 
     IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
     IUser<UserId> getUserById(long userId) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
-    boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException;
+    boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
 
     IUser<UserId> updatePassword(IUser<UserId> user, String plainTextPassword) throws UserDoesNotExistException, InvalidCredentialsException, UserManagementException;
 
