@@ -27,9 +27,9 @@ public interface IAuthenticationService<UserId, GroupId> {
     void reset();
 
     IUser<UserId> addUser(IGroup<GroupId> company, String password, String screenName, String emailAddress, String locale, String firstName, String middleName,
-                          String lastName) throws UserManagementException;
+                          String lastName) throws UserManagementException, InvalidCredentialsException;
 
-    void deleteUser(IUser<UserId> user) throws UserManagementException;
+    void deleteUser(IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
 
     /**
      * If Spring is not available, create the required services. Be careful, if
