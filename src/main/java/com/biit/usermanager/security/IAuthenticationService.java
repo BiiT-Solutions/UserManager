@@ -12,7 +12,7 @@ public interface IAuthenticationService<UserId, GroupId> {
     IUser<UserId> authenticate(String userMail, String password) throws UserManagementException, AuthenticationRequired, InvalidCredentialsException,
             UserDoesNotExistException;
 
-    IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
+    IGroup<GroupId> getDefaultGroup(IUser<UserId> user) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
     IUser<UserId> getUserByEmail(String userEmail) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 
