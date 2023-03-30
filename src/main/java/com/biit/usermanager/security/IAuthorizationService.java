@@ -68,14 +68,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
     IRole<RoleId> getRole(String roleName) throws UserManagementException, RoleDoesNotExistsException, InvalidCredentialsException;
 
     /**
-     * Get the activities associated to this role.
-     *
-     * @param role
-     * @return
-     */
-    Set<IActivity> getRoleActivities(IRole<RoleId> role) throws InvalidCredentialsException;
-
-    /**
      * Get the roles for this group.
      *
      * @param group
@@ -142,28 +134,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
     Set<IRole<RoleId>> getAllRoles(IGroup<Long> organization) throws UserManagementException, OrganizationDoesNotExistException, InvalidCredentialsException;
 
     /**
-     * A user is authorized to perform this activity in the application.
-     *
-     * @param user
-     * @param activity
-     * @return
-     * @throws UserManagementException
-     */
-    boolean isAuthorizedActivity(IUser<UserId> user, IActivity activity) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
-
-    /**
-     * A user is authorized to perform an activity in this group.
-     *
-     * @param user
-     * @param organization
-     * @param activity
-     * @return
-     * @throws UserManagementException
-     */
-    boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity) throws UserManagementException, UserDoesNotExistException,
-            OrganizationDoesNotExistException, InvalidCredentialsException;
-
-    /**
      * Clear all cached instances.
      */
     void reset();
@@ -207,10 +177,6 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
 
     void addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role) throws UserManagementException, UserDoesNotExistException,
             RoleDoesNotExistsException, OrganizationDoesNotExistException, InvalidCredentialsException;
-
-    IRoleActivities getRoleActivities() throws InvalidCredentialsException;
-
-    void setRoleActivities(IRoleActivities roleActivities) throws InvalidCredentialsException;
 
     void createBeans();
 
