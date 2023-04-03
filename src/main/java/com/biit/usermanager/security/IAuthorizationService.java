@@ -74,7 +74,7 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
      * @return
      * @throws UserManagementException
      */
-    Set<IRole<RoleId>> getUserGroupRoles(IGroup<GroupId> group) throws UserManagementException, InvalidCredentialsException;
+    Set<IRole<RoleId>> getUserGroupRoles(IGroup<GroupId> group) throws UserManagementException, OrganizationDoesNotExistException, InvalidCredentialsException;
 
     /**
      * Get all user groups
