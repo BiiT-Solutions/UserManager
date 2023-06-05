@@ -81,8 +81,7 @@ public class GroupPool<UserId, GroupId> extends ElementsByTagPool<GroupId, IGrou
 	/**
 	 * Gets all previously stored groups of a user in a site.
 	 * 
-	 * @param siteId
-	 * @param userId
+	 * @param groupId
 	 * @return
 	 */
 	public IGroup<GroupId> getGroupById(GroupId groupId) {

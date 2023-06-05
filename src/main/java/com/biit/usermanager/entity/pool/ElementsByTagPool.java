@@ -91,7 +91,7 @@ public abstract class ElementsByTagPool<ElementId, Type extends IElement<Element
 	/**
 	 * Never expires elements here.
 	 * 
-	 * @param elementId
+	 * @param element
 	 * @return
 	 */
 	@Override
