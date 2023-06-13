@@ -3,7 +3,11 @@ package com.biit.usermanager.security;
 import com.biit.usermanager.entity.IGroup;
 import com.biit.usermanager.entity.IRole;
 import com.biit.usermanager.entity.IUser;
-import com.biit.usermanager.security.exceptions.*;
+import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
+import com.biit.usermanager.security.exceptions.OrganizationDoesNotExistException;
+import com.biit.usermanager.security.exceptions.RoleDoesNotExistsException;
+import com.biit.usermanager.security.exceptions.UserDoesNotExistException;
+import com.biit.usermanager.security.exceptions.UserManagementException;
 
 import java.util.Set;
 
@@ -170,17 +174,21 @@ public interface IAuthorizationService<UserId, GroupId, RoleId> {
      * @return a set of organizations
      * @throws UserManagementException
      */
-    Set<IGroup<Long>> getUserChildrenOrganizations(IUser<UserId> user, IGroup<GroupId> parentOrganization) throws UserManagementException, UserDoesNotExistException, OrganizationDoesNotExistException,
+    Set<IGroup<Long>> getUserChildrenOrganizations(IUser<UserId> user, IGroup<GroupId> parentOrganization)
+            throws UserManagementException, UserDoesNotExistException, OrganizationDoesNotExistException,
             InvalidCredentialsException;
 
-    void addUserRole(IUser<UserId> user, IRole<RoleId> role) throws UserManagementException, UserDoesNotExistException, RoleDoesNotExistsException, InvalidCredentialsException;
+    void addUserRole(IUser<UserId> user, IRole<RoleId> role)
+            throws UserManagementException, UserDoesNotExistException, RoleDoesNotExistsException, InvalidCredentialsException;
 
-    void addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role) throws UserManagementException, UserDoesNotExistException,
+    void addUserOrganizationRole(IUser<UserId> user, IGroup<GroupId> organization, IRole<RoleId> role)
+            throws UserManagementException, UserDoesNotExistException,
             RoleDoesNotExistsException, OrganizationDoesNotExistException, InvalidCredentialsException;
 
     void createBeans();
 
-    void cleanUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization) throws UserManagementException, UserDoesNotExistException, OrganizationDoesNotExistException,
+    void cleanUserChildrenOrganizations(IUser<Long> user, IGroup<Long> parentOrganization)
+            throws UserManagementException, UserDoesNotExistException, OrganizationDoesNotExistException,
             InvalidCredentialsException;
 
 }

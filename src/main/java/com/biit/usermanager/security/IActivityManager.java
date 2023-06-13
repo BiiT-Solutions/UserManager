@@ -21,7 +21,6 @@ public interface IActivityManager<UserId, GroupId, RoleId> {
     Set<IActivity> getRoleActivities(IRole<RoleId> role) throws InvalidCredentialsException;
 
 
-
     /**
      * A user is authorized to perform this activity in the application.
      *
@@ -41,15 +40,14 @@ public interface IActivityManager<UserId, GroupId, RoleId> {
      * @return
      * @throws UserManagementException
      */
-    boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity) throws UserManagementException, UserDoesNotExistException,
+    boolean isAuthorizedActivity(IUser<UserId> user, IGroup<GroupId> organization, IActivity activity)
+            throws UserManagementException, UserDoesNotExistException,
             OrganizationDoesNotExistException, InvalidCredentialsException;
-
 
 
     IRoleActivities getRoleActivities() throws InvalidCredentialsException;
 
     void setRoleActivities(IRoleActivities roleActivities) throws InvalidCredentialsException;
-
 
 
 }

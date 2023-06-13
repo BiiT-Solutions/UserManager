@@ -1,14 +1,14 @@
 package com.biit.usermanager.security.exceptions;
 
 public class RoleDoesNotExistsException extends Exception {
-	private static final long serialVersionUID = 8303590976450383259L;
+    private static final long serialVersionUID = 8303590976450383259L;
 
-	public RoleDoesNotExistsException(String message) {
-		super(message);
-	}
+    public RoleDoesNotExistsException(String message) {
+        super(message);
+    }
 
-	public RoleDoesNotExistsException(String message, Throwable e) {
-		super(message, e);
-	}
+    public RoleDoesNotExistsException(String message, Throwable e) {
+        super(message, e);
+    }
 
 }

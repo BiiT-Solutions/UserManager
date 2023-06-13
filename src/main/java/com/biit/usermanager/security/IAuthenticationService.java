@@ -20,7 +20,8 @@ public interface IAuthenticationService<UserId, GroupId> {
 
     boolean isInGroup(IGroup<GroupId> group, IUser<UserId> user) throws UserManagementException, InvalidCredentialsException;
 
-    IUser<UserId> updatePassword(IUser<UserId> user, String plainTextPassword) throws UserDoesNotExistException, InvalidCredentialsException, UserManagementException;
+    IUser<UserId> updatePassword(IUser<UserId> user, String plainTextPassword)
+            throws UserDoesNotExistException, InvalidCredentialsException, UserManagementException;
 
     IUser<Long> updateUser(IUser<Long> user) throws UserManagementException, UserDoesNotExistException, InvalidCredentialsException;
 

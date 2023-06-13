@@ -4,24 +4,24 @@ import java.util.Locale;
 
 public interface IUser<Id> extends IElement<Id>, Comparable<IUser<Id>> {
 
-	String getEmailAddress();
+    String getEmailAddress();
 
-	String getFirstName();
+    String getFirstName();
 
-	String getLanguageId();
+    String getLanguageId();
 
-	String getLastName();
+    String getLastName();
 
-	Locale getLocale();
+    Locale getLocale();
 
-	String getPassword();
+    String getPassword();
 
-	void setFirstName(String name);
+    void setFirstName(String name);
 
-	void setLastName(String surname);
+    void setLastName(String surname);
 
-	void setLocale(Locale locale);
+    void setLocale(Locale locale);
 
-	void setPassword(String password);
+    void setPassword(String password);
 
 }
