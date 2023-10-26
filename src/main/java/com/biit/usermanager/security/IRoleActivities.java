@@ -8,9 +8,9 @@ import java.util.Set;
  * Relationship between a role and the activities that are assigned to this
  * role.
  */
-public interface IRoleActivities<KEY> {
+public interface IRoleActivities<RoleId> {
 
-    Set<IActivity> getRoleActivities(IRole<KEY> role);
+    Set<IActivity> getRoleActivities(IRole<RoleId> role);
 
     Set<IActivity> getRoleActivities(String roleName);
 

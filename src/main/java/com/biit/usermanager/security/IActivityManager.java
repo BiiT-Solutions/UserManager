@@ -45,9 +45,9 @@ public interface IActivityManager<UserId, GroupId, RoleId> {
             OrganizationDoesNotExistException, InvalidCredentialsException;
 
 
-    IRoleActivities getRoleActivities() throws InvalidCredentialsException;
+    IRoleActivities<RoleId> getRoleActivities() throws InvalidCredentialsException;
 
-    void setRoleActivities(IRoleActivities roleActivities) throws InvalidCredentialsException;
+    void setRoleActivities(IRoleActivities<RoleId> roleActivities) throws InvalidCredentialsException;
 
 
 }
