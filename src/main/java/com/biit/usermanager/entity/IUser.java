@@ -8,8 +8,6 @@ public interface IUser<Id> extends IElement<Id>, Comparable<IUser<Id>> {
 
     String getFirstName();
 
-    String getLanguageId();
-
     String getLastName();
 
     Locale getLocale();
