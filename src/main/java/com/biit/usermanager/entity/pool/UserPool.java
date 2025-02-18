@@ -114,7 +114,7 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
                 BiitPoolLogger.info(this.getClass(), "Removed element '" + removedUser + "'.");
                 return removedUser;
             } catch (NoSuchMethodError e) {
-                BiitPoolLogger.errorMessageNotification(this.getClass(), e);
+                BiitPoolLogger.errorMessage(this.getClass(), e);
             }
         }
         return null;
