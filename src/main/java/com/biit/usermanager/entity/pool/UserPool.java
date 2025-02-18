@@ -33,10 +33,9 @@ public class UserPool<UserId, RoleId> extends ElementsByTagPool<UserId, IUser<Us
         if (emailAddress != null) {
             long now = System.currentTimeMillis();
             UserId userId = null;
-            if (getElementsTime().size() > 0) {
-                Iterator<UserId> e = new HashMap<UserId, Long>(getElementsTime()).keySet().iterator();
-                while (e.hasNext()) {
-                    userId = e.next();
+            if (!getElementsTime().isEmpty()) {
+                for (UserId id : new HashMap<>(getElementsTime()).keySet()) {
+                    userId = id;
                     if (getElementsTime().get(userId) != null
                             && (now - getElementsTime().get(userId)) > getExpirationTime()) {
                         // object has expired
