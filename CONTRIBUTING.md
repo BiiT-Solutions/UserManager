@@ -1,8 +1,8 @@
 ## Contributing to this project
 
-[fork]: https://github.com/BiiT-Solutions/BiiTCommonUtils/fork
+[fork]: https://github.com/BiiT-Solutions/UserManager/fork
 
-[pr]: https://github.com/BiiT-Solutions/BiiTCommonUtils/compare
+[pr]: https://github.com/BiiT-Solutions/UserManager/compare
 
 [cc]: https://www.conventionalcommits.org/en/v1.0.0/#summary
 
