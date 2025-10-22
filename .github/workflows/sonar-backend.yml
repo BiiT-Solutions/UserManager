@@ -40,7 +40,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=biit-solutions
-            "-Dsonar.projectName=BiiT Common Utils"
+            "-Dsonar.projectName=User Manager"
             -Dsonar.projectKey=BiiT-Solutions_UserManager
             -Dsonar.java.binaries=.
             -Dsonar.verbose=true
